@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stickies.live/schema/0.1.json",
+  "title": "Stickies 0.1 document",
+  "description": "A JSON Canvas document carrying sticky notes. See SPEC.md.",
+  "type": "object",
+  "required": ["stickies", "nodes"],
+  "properties": {
+    "stickies": { "type": "string", "pattern": "^0\\.[0-9]+$" },
+    "source": { "$ref": "#/$defs/source" },
+    "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+    "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } }
+  },
+  "$defs": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "app": { "type": "string" },
+        "url": { "type": "string" },
+        "id": { "type": "string" }
+      }
+    },
+    "color": {
+      "type": "string",
+      "pattern": "^(#[0-9A-Fa-f]{6}|[1-6])$"
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "x", "y", "width", "height"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "type": "string" },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 },
+        "color": { "$ref": "#/$defs/color" }
+      },
+      "if": { "properties": { "type": { "const": "text" } } },
+      "then": { "$ref": "#/$defs/note" }
+    },
+    "note": {
+      "type": "object",
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string" },
+        "colorName": { "type": "string" },
+        "state": { "type": "string", "description": "open, progress or done. Unknown values are treated as open." },
+        "author": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "source": { "$ref": "#/$defs/source" },
+        "ext": { "type": "object", "additionalProperties": { "type": "object" } }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "required": ["id", "fromNode", "toNode"],
+      "properties": {
+        "id": { "type": "string" },
+        "fromNode": { "type": "string" },
+        "toNode": { "type": "string" },
+        "fromSide": { "enum": ["top", "right", "bottom", "left"] },
+        "toSide": { "enum": ["top", "right", "bottom", "left"] },
+        "fromEnd": { "enum": ["none", "arrow"] },
+        "toEnd": { "enum": ["none", "arrow"] },
+        "color": { "$ref": "#/$defs/color" },
+        "label": { "type": "string" }
+      }
+    }
+  }
+}

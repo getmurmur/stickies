@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* Colours, type and motion from Murmur (apps/desktop/src/styles/tokens.css and
+   globals.css). Dark mode follows the system here, where Murmur uses a class. */
+:root {
+  --background: #fcfcfd;
+  --foreground: #1c2024;
+  --muted: #80838d;
+  --dot: #e0e1e6;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-hover: 120ms;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111113;
+    --foreground: #edeef0;
+    --muted: #777b84;
+    --dot: #26272b;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  /* Murmur's Untitled Sans is licensed for the app only, so the site uses the system's. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-sticky-paper: var(--sticky-paper);
+  --color-sticky-header: var(--sticky-header);
+  --color-sticky-edge: var(--sticky-edge);
+  --color-sticky-ink: var(--sticky-ink);
+  --color-sticky-meta: var(--sticky-meta);
+  --text-body: 15px;
+  --text-body--line-height: 1.6;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body {
+  @apply bg-background text-foreground font-sans antialiased;
+}
+
+/* The canvas: a quiet dot grid that moves with the notes. */
+.canvas-dots {
+  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.2px);
+  background-size: 24px 24px;
+}
+
+/* Sticky notes, after macOS Stickies: a paper colour, a slightly deeper header to
+   hold, an edge, ink, and a quiet ink for the date. Chosen per note with
+   data-sticky-color. */
+[data-sticky-color] {
+  --sticky-paper: #fdf6c8;
+  --sticky-header: #f6e9a6;
+  --sticky-edge: #e8d995;
+  --sticky-ink: #3b3214;
+  --sticky-meta: #9a8d5c;
+}
+[data-sticky-color="blue"] {
+  --sticky-paper: #ddedfb;
+  --sticky-header: #c7dff6;
+  --sticky-edge: #abc9ea;
+  --sticky-ink: #1d3049;
+  --sticky-meta: #6c86a5;
+}
+[data-sticky-color="green"] {
+  --sticky-paper: #def3d7;
+  --sticky-header: #c8e9bd;
+  --sticky-edge: #a9d69c;
+  --sticky-ink: #22391c;
+  --sticky-meta: #6e8e65;
+}
+[data-sticky-color="pink"] {
+  --sticky-paper: #fbe1ed;
+  --sticky-header: #f5c9dd;
+  --sticky-edge: #e7abc6;
+  --sticky-ink: #4a1f31;
+  --sticky-meta: #a06e85;
+}
+[data-sticky-color="purple"] {
+  --sticky-paper: #ede3fb;
+  --sticky-header: #ddcdf6;
+  --sticky-edge: #c5aee9;
+  --sticky-ink: #33204d;
+  --sticky-meta: #8973a7;
+}
+[data-sticky-color="grey"] {
+  --sticky-paper: #f2f2f1;
+  --sticky-header: #e3e3e1;
+  --sticky-edge: #cfcfcc;
+  --sticky-ink: #2b2b2a;
+  --sticky-meta: #8a8a87;
+}
+@media (prefers-color-scheme: dark) {
+  [data-sticky-color] {
+    --sticky-paper: #48421f;
+    --sticky-header: #575027;
+    --sticky-edge: #665d2f;
+    --sticky-ink: #f7f0cb;
+    --sticky-meta: #b9ad7a;
+  }
+  [data-sticky-color="blue"] {
+    --sticky-paper: #1f3249;
+    --sticky-header: #273d57;
+    --sticky-edge: #324b68;
+    --sticky-ink: #dcebfb;
+    --sticky-meta: #8ea8c7;
+  }
+  [data-sticky-color="green"] {
+    --sticky-paper: #223a20;
+    --sticky-header: #2a4727;
+    --sticky-edge: #355630;
+    --sticky-ink: #ddf2d6;
+    --sticky-meta: #90b087;
+  }
+  [data-sticky-color="pink"] {
+    --sticky-paper: #48222f;
+    --sticky-header: #572a39;
+    --sticky-edge: #683446;
+    --sticky-ink: #fbe0ec;
+    --sticky-meta: #c493a8;
+  }
+  [data-sticky-color="purple"] {
+    --sticky-paper: #34234d;
+    --sticky-header: #3f2b5c;
+    --sticky-edge: #4c366d;
+    --sticky-ink: #ece2fb;
+    --sticky-meta: #a996c6;
+  }
+  [data-sticky-color="grey"] {
+    --sticky-paper: #2d2d2c;
+    --sticky-header: #363635;
+    --sticky-edge: #434341;
+    --sticky-ink: #f0f0ee;
+    --sticky-meta: #9d9d9a;
+  }
+}
+
+/* A sticky's shadow, like paper on a desk: a tight contact shadow, then wider, softer
+   falloff, tinted by the note's own ink. Picking a note up (data-lifted) raises it. */
+.sticky-shadow {
+  --sticky-shade: color-mix(in oklch, var(--sticky-ink) 55%, black);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 50%, transparent),
+    0 0 0 0.5px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
+    0 1px 1px color-mix(in oklch, var(--sticky-shade) 8%, transparent),
+    0 3px 6px -2px color-mix(in oklch, var(--sticky-shade) 8%, transparent),
+    0 10px 20px -8px color-mix(in oklch, var(--sticky-shade) 12%, transparent),
+    0 24px 44px -20px color-mix(in oklch, var(--sticky-shade) 16%, transparent);
+  transition:
+    box-shadow 200ms var(--ease-out),
+    translate 200ms var(--ease-out);
+}
+.sticky-shadow[data-lifted] {
+  translate: 0 -2px;
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklch, white 50%, transparent),
+    0 0 0 0.5px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
+    0 2px 3px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
+    0 8px 14px -4px color-mix(in oklch, var(--sticky-shade) 10%, transparent),
+    0 22px 36px -10px color-mix(in oklch, var(--sticky-shade) 16%, transparent),
+    0 44px 72px -24px color-mix(in oklch, var(--sticky-shade) 20%, transparent);
+}
+@media (prefers-color-scheme: dark) {
+  .sticky-shadow {
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 10%, transparent),
+      0 0 0 0.5px color-mix(in oklch, black 40%, transparent),
+      0 1px 2px color-mix(in oklch, black 30%, transparent),
+      0 6px 12px -4px color-mix(in oklch, black 35%, transparent),
+      0 20px 40px -16px color-mix(in oklch, black 45%, transparent);
+  }
+  .sticky-shadow[data-lifted] {
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklch, white 10%, transparent),
+      0 0 0 0.5px color-mix(in oklch, black 40%, transparent),
+      0 3px 6px color-mix(in oklch, black 30%, transparent),
+      0 14px 28px -8px color-mix(in oklch, black 40%, transparent),
+      0 40px 72px -24px color-mix(in oklch, black 55%, transparent);
+  }
+}
