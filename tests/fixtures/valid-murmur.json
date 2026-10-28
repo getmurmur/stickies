@@ -1,0 +1,41 @@
+{
+  "stickies": "0.1",
+  "source": { "app": "Murmur", "url": "murmur://conversation/c_8f2" },
+  "nodes": [
+    {
+      "id": "n_41a",
+      "type": "text",
+      "text": "Sticky notes as an open standard",
+      "x": 0, "y": 0, "width": 240, "height": 160,
+      "color": "#fdf6c8",
+      "colorName": "yellow",
+      "state": "progress",
+      "author": "George",
+      "createdAt": "2026-10-28T22:40:00Z",
+      "updatedAt": "2026-10-28T22:47:00Z",
+      "source": { "url": "murmur://conversation/c_8f2/note/n_41a", "id": "n_41a" },
+      "ext": { "murmur": { "workItem": true } }
+    },
+    {
+      "id": "n_41b",
+      "type": "text",
+      "text": "Copy and paste first, drag later",
+      "x": 280, "y": 0, "width": 240, "height": 160,
+      "color": "#ddedfb",
+      "colorName": "blue"
+    },
+    {
+      "id": "n_41c",
+      "type": "text",
+      "text": "Build on **JSON Canvas**",
+      "x": 280, "y": 200, "width": 240, "height": 160,
+      "color": "#def3d7",
+      "colorName": "green",
+      "state": "done"
+    }
+  ],
+  "edges": [
+    { "id": "e_1", "fromNode": "n_41a", "toNode": "n_41b", "fromSide": "right", "toSide": "left", "toEnd": "arrow" },
+    { "id": "e_2", "fromNode": "n_41a", "toNode": "n_41c", "toEnd": "arrow" }
+  ]
+}

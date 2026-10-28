@@ -1,0 +1,1 @@
+{"stickies":"0.1","nodes":[{"id":"a","type":"text","x":0,"y":0,"width":0,"height":10,"color":"yellow","state":"wip","colorName":"teal"},{"id":"a","type":"file","x":1,"y":1,"width":1,"height":1}],"edges":[{"id":"e","fromNode":"a","toNode":"zz","toSide":"middle"}]}

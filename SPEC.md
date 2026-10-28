@@ -154,7 +154,7 @@ When a person copies or drags notes, the sender puts several versions on the cli
 | Order | Format | Contents |
 |---|---|---|
 | 1 | Stickies JSON (below) | The full document. |
-| 2 | `text/html` | Each note as a coloured box, with the document in a `data-stickies` attribute (§8.2). |
+| 2 | `text/html` | Each note as a coloured box, with the document in a `data-stickies` attribute (§8.2). Required. |
 | 3 | `text/plain` | The notes' text (§8.3). |
 | 4 | `image/png` (optional) | A picture of the notes, for image-only apps. |
 
@@ -165,7 +165,7 @@ When a person copies or drags notes, the sender puts several versions on the cli
 | Media type | `application/vnd.stickies+json` |
 | macOS (UTI) | `live.stickies.json`, conforming to `public.json` |
 | Windows | Registered clipboard format `application/vnd.stickies+json` |
-| Web, async clipboard | `web application/vnd.stickies+json` (Chrome requires the `web ` prefix) |
+| Web, copy and paste | `application/vnd.stickies+json` on the event's `clipboardData` (§8.5) |
 | Web, drag and drop | `application/vnd.stickies+json` on `DataTransfer` |
 
 ### 8.2 HTML
@@ -183,6 +183,7 @@ Browsers don't let every page read custom clipboard types, so the HTML version a
 - Notes go in reading order (top to bottom, then left to right).
 - Styles are inline so they survive pasting into documents and email.
 - A receiver that finds `data-stickies` SHOULD use it instead of the visible HTML.
+- Receivers MUST find the element by its attribute, not by position: browsers may wrap pasted HTML in `<html><body>`, and other apps may add their own markup around it.
 
 ### 8.3 Plain text
 
@@ -197,6 +198,21 @@ A receiver SHOULD:
 3. Otherwise, fall back to its usual paste.
 
 If the document's `source` shows it came from the receiver itself and the notes still exist, the receiver MAY offer to move or link them instead of making copies.
+
+### 8.5 On the web
+
+Web pages SHOULD write all three versions in a `copy` (or `cut`) event, with `event.clipboardData.setData()`, and read them in a `paste` event, with `event.clipboardData.getData()`. What browsers allow, tested in October 2026 with Chromium, WebKit and Firefox:
+
+| | Chromium | WebKit (Safari) | Firefox |
+|---|---|---|---|
+| Custom type in copy and paste events, same site | yes | yes | yes |
+| Custom type in copy and paste events, another site | yes | no: removed | yes |
+| `web ` custom type through `navigator.clipboard.write()` | readable only through `navigator.clipboard.read()` | written, but empty when read | refused |
+| `text/html` with `data-stickies` | yes, every case | yes, every case | yes, every case |
+
+So the HTML version is the only one that reaches every receiver, and it's required for pages (§8). Pages SHOULD NOT rely on `navigator.clipboard` for copying notes. A page that has to copy outside a `copy` event, such as from a "Copy" button, SHOULD write `text/html` and `text/plain` with `navigator.clipboard.write()`, and rely on `data-stickies`.
+
+Browsers may store custom types in their own private clipboard format, which native apps can't read. Native apps receiving from a browser SHOULD therefore check `public.html` (or `CF_HTML` on Windows) for `data-stickies`.
 
 ## 9. Agents (MCP), non-normative
 

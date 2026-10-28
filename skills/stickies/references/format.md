@@ -68,6 +68,6 @@ A note with no colour is yellow. Colour is display only; progress goes in `state
 |---|---|
 | Media type | `application/vnd.stickies+json` |
 | macOS | `live.stickies.json` |
-| Web, async clipboard | `web application/vnd.stickies+json` |
+| Web, copy and paste events | `application/vnd.stickies+json` on `clipboardData` |
 
 Alongside it: `text/html` (coloured boxes, with the full document in a `data-stickies` attribute on the outer element) and `text/plain` (each note's text, separated by a blank line).

@@ -7,7 +7,7 @@ Key points for agents:
 - A document is JSON: `{ "stickies": "0.1", "nodes": [...], "edges": [] }`. Each note is a node with `"type": "text"`, an `id`, `text` in Markdown, and `x`, `y`, `width`, `height` (default 240 × 160).
 - Colour is for display only. Send both `colorName` (yellow, blue, green, pink, purple or grey) and `color` (its hex). Progress goes in `state`, never in colour. An absent `state` means open.
 - Keep fields you don't understand, especially `ext`, which holds app-specific data.
-- On the clipboard, a copy carries the document (`application/vnd.stickies+json`; on macOS `live.stickies.json`), plus `text/html` with the document in a `data-stickies` attribute, plus `text/plain`.
+- On the clipboard, a copy carries the document (`application/vnd.stickies+json`; on macOS `live.stickies.json`), plus `text/html` with the document in a `data-stickies` attribute, plus `text/plain`. The HTML version is required: it's the only one every browser passes between sites.
 - Save a document as `.canvas` to open it in Obsidian.
 
 ## Spec
@@ -15,6 +15,12 @@ Key points for agents:
 - [Stickies 0.1 spec](https://stickies.live/spec.md): the full draft, including fields, colours, state, extensions, clipboard formats, MCP tools and security
 - [JSON Schema](https://stickies.live/schema/0.1.json): for checking a document
 - [Example document](https://stickies.live/examples/murmur-cluster.json): three notes and two arrows, copied from Murmur
+
+## React components (shadcn registry)
+
+- [Docs](https://stickies.live/docs): a composable sticky note, a full board, and the hooks underneath, with copy and paste in the Stickies format
+- [Registry index](https://stickies.live/r/registry.json): every item; install one with `npx shadcn@latest add https://stickies.live/r/<name>.json`
+- [sticky-board](https://stickies.live/r/sticky-board.json): the whole board, with everything it uses
 
 ## Agent Skill
 

@@ -1,5 +1,5 @@
-import { Canvas } from "@/components/Canvas"
+import { HomeBoard } from "@/components/HomeBoard"
 
 export default function Home() {
-  return <Canvas />
+  return <HomeBoard />
 }

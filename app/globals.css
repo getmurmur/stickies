@@ -1,107 +1,31 @@
 @import "tailwindcss";
+@import "../registry/stickies/theme.css";
 
-/* Colours, type and motion from Murmur (apps/desktop/src/styles/tokens.css and
-   globals.css). The site is light only. */
+/* Colours, type and motion from Murmur (apps/desktop/src/styles/tokens.css). The site is
+   light only. The sticky notes' own theme is the registry's (registry/stickies/theme.css). */
 :root {
   --background: #fcfcfd;
   --foreground: #1c2024;
   --muted: #80838d;
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --duration-hover: 120ms;
+  --border: #e4e4e7;
+  --ring: #8b8d98;
+  --code: #f4f4f5;
   color-scheme: light;
 }
+
 @theme inline {
   /* Murmur's Untitled Sans is licensed for the app only, so the site uses the system's. */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
-  --color-sticky-paper: var(--sticky-paper);
-  --color-sticky-header: var(--sticky-header);
-  --color-sticky-edge: var(--sticky-edge);
-  --color-sticky-ink: var(--sticky-ink);
-  --color-sticky-meta: var(--sticky-meta);
-  --text-body: 15px;
-  --text-body--line-height: 1.6;
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-code: var(--code);
 }
 
-html,
-body {
-  height: 100%;
-  overflow: hidden;
-  overscroll-behavior: none;
-}
 body {
   @apply bg-background text-foreground font-sans antialiased;
-}
-
-/* Sticky notes, after macOS Stickies: a paper colour, a slightly deeper header to
-   hold, an edge, ink, and a quiet ink for the date. Chosen per note with
-   data-sticky-color. */
-[data-sticky-color] {
-  --sticky-paper: #fdf6c8;
-  --sticky-header: #f6e9a6;
-  --sticky-edge: #e8d995;
-  --sticky-ink: #3b3214;
-  --sticky-meta: #9a8d5c;
-}
-[data-sticky-color="blue"] {
-  --sticky-paper: #ddedfb;
-  --sticky-header: #c7dff6;
-  --sticky-edge: #abc9ea;
-  --sticky-ink: #1d3049;
-  --sticky-meta: #6c86a5;
-}
-[data-sticky-color="green"] {
-  --sticky-paper: #def3d7;
-  --sticky-header: #c8e9bd;
-  --sticky-edge: #a9d69c;
-  --sticky-ink: #22391c;
-  --sticky-meta: #6e8e65;
-}
-[data-sticky-color="pink"] {
-  --sticky-paper: #fbe1ed;
-  --sticky-header: #f5c9dd;
-  --sticky-edge: #e7abc6;
-  --sticky-ink: #4a1f31;
-  --sticky-meta: #a06e85;
-}
-[data-sticky-color="purple"] {
-  --sticky-paper: #ede3fb;
-  --sticky-header: #ddcdf6;
-  --sticky-edge: #c5aee9;
-  --sticky-ink: #33204d;
-  --sticky-meta: #8973a7;
-}
-[data-sticky-color="grey"] {
-  --sticky-paper: #f2f2f1;
-  --sticky-header: #e3e3e1;
-  --sticky-edge: #cfcfcc;
-  --sticky-ink: #2b2b2a;
-  --sticky-meta: #8a8a87;
-}
-/* A sticky's shadow, like paper on a desk: a tight contact shadow, then wider, softer
-   falloff, tinted by the note's own ink. Picking a note up (data-lifted) raises it. */
-.sticky-shadow {
-  --sticky-shade: color-mix(in oklch, var(--sticky-ink) 55%, black);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklch, white 50%, transparent),
-    0 0 0 0.5px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
-    0 1px 1px color-mix(in oklch, var(--sticky-shade) 8%, transparent),
-    0 3px 6px -2px color-mix(in oklch, var(--sticky-shade) 8%, transparent),
-    0 10px 20px -8px color-mix(in oklch, var(--sticky-shade) 12%, transparent),
-    0 24px 44px -20px color-mix(in oklch, var(--sticky-shade) 16%, transparent);
-  transition:
-    box-shadow 200ms var(--ease-out),
-    translate 200ms var(--ease-out);
-}
-.sticky-shadow[data-lifted] {
-  translate: 0 -2px;
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklch, white 50%, transparent),
-    0 0 0 0.5px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
-    0 2px 3px color-mix(in oklch, var(--sticky-shade) 6%, transparent),
-    0 8px 14px -4px color-mix(in oklch, var(--sticky-shade) 10%, transparent),
-    0 22px 36px -10px color-mix(in oklch, var(--sticky-shade) 16%, transparent),
-    0 44px 72px -24px color-mix(in oklch, var(--sticky-shade) 20%, transparent);
+  overscroll-behavior: none;
 }
