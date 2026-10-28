@@ -94,8 +94,7 @@ export function Canvas() {
 
   return (
     <main
-      className={cn("canvas-dots fixed inset-0 touch-none select-none", grabbing ? "cursor-grabbing" : "cursor-grab")}
-      style={{ backgroundPosition: `${pan.x}px ${pan.y}px` }}
+      className={cn("fixed inset-0 touch-none select-none", grabbing ? "cursor-grabbing" : "cursor-grab")}
       onPointerDown={(e) => {
         if (e.button !== 0) return
         // Clicking the background ends any typing, as clicking a desk would.

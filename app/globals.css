@@ -1,26 +1,15 @@
 @import "tailwindcss";
 
 /* Colours, type and motion from Murmur (apps/desktop/src/styles/tokens.css and
-   globals.css). Dark mode follows the system here, where Murmur uses a class. */
+   globals.css). The site is light only. */
 :root {
   --background: #fcfcfd;
   --foreground: #1c2024;
   --muted: #80838d;
-  --dot: #e0e1e6;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --duration-hover: 120ms;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #111113;
-    --foreground: #edeef0;
-    --muted: #777b84;
-    --dot: #26272b;
-    color-scheme: dark;
-  }
-}
-
 @theme inline {
   /* Murmur's Untitled Sans is licensed for the app only, so the site uses the system's. */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -44,12 +33,6 @@ body {
 }
 body {
   @apply bg-background text-foreground font-sans antialiased;
-}
-
-/* The canvas: a quiet dot grid that moves with the notes. */
-.canvas-dots {
-  background-image: radial-gradient(circle, var(--dot) 1px, transparent 1.2px);
-  background-size: 24px 24px;
 }
 
 /* Sticky notes, after macOS Stickies: a paper colour, a slightly deeper header to
@@ -97,51 +80,6 @@ body {
   --sticky-ink: #2b2b2a;
   --sticky-meta: #8a8a87;
 }
-@media (prefers-color-scheme: dark) {
-  [data-sticky-color] {
-    --sticky-paper: #48421f;
-    --sticky-header: #575027;
-    --sticky-edge: #665d2f;
-    --sticky-ink: #f7f0cb;
-    --sticky-meta: #b9ad7a;
-  }
-  [data-sticky-color="blue"] {
-    --sticky-paper: #1f3249;
-    --sticky-header: #273d57;
-    --sticky-edge: #324b68;
-    --sticky-ink: #dcebfb;
-    --sticky-meta: #8ea8c7;
-  }
-  [data-sticky-color="green"] {
-    --sticky-paper: #223a20;
-    --sticky-header: #2a4727;
-    --sticky-edge: #355630;
-    --sticky-ink: #ddf2d6;
-    --sticky-meta: #90b087;
-  }
-  [data-sticky-color="pink"] {
-    --sticky-paper: #48222f;
-    --sticky-header: #572a39;
-    --sticky-edge: #683446;
-    --sticky-ink: #fbe0ec;
-    --sticky-meta: #c493a8;
-  }
-  [data-sticky-color="purple"] {
-    --sticky-paper: #34234d;
-    --sticky-header: #3f2b5c;
-    --sticky-edge: #4c366d;
-    --sticky-ink: #ece2fb;
-    --sticky-meta: #a996c6;
-  }
-  [data-sticky-color="grey"] {
-    --sticky-paper: #2d2d2c;
-    --sticky-header: #363635;
-    --sticky-edge: #434341;
-    --sticky-ink: #f0f0ee;
-    --sticky-meta: #9d9d9a;
-  }
-}
-
 /* A sticky's shadow, like paper on a desk: a tight contact shadow, then wider, softer
    falloff, tinted by the note's own ink. Picking a note up (data-lifted) raises it. */
 .sticky-shadow {
@@ -166,22 +104,4 @@ body {
     0 8px 14px -4px color-mix(in oklch, var(--sticky-shade) 10%, transparent),
     0 22px 36px -10px color-mix(in oklch, var(--sticky-shade) 16%, transparent),
     0 44px 72px -24px color-mix(in oklch, var(--sticky-shade) 20%, transparent);
-}
-@media (prefers-color-scheme: dark) {
-  .sticky-shadow {
-    box-shadow:
-      inset 0 1px 0 color-mix(in oklch, white 10%, transparent),
-      0 0 0 0.5px color-mix(in oklch, black 40%, transparent),
-      0 1px 2px color-mix(in oklch, black 30%, transparent),
-      0 6px 12px -4px color-mix(in oklch, black 35%, transparent),
-      0 20px 40px -16px color-mix(in oklch, black 45%, transparent);
-  }
-  .sticky-shadow[data-lifted] {
-    box-shadow:
-      inset 0 1px 0 color-mix(in oklch, white 10%, transparent),
-      0 0 0 0.5px color-mix(in oklch, black 40%, transparent),
-      0 3px 6px color-mix(in oklch, black 30%, transparent),
-      0 14px 28px -8px color-mix(in oklch, black 40%, transparent),
-      0 40px 72px -24px color-mix(in oklch, black 55%, transparent);
-  }
 }
