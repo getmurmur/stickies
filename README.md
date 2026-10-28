@@ -11,5 +11,6 @@ Copied notes also go on the clipboard as HTML and plain text, so they paste prop
 - [SPEC.md](SPEC.md): the draft spec (0.1)
 - [public/schema/0.1.json](public/schema/0.1.json): JSON Schema
 - [examples/](examples/): example documents
+- [skills/stickies/](skills/stickies/): an Agent Skill so agents can make, check and copy Stickies notes
 
 Status: early draft, started from Murmur's sticky notes.
