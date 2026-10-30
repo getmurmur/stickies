@@ -1,0 +1,21 @@
+name: Install check
+
+# Installs the registry into a brand-new Next.js and shadcn app and builds it, as someone
+# would. Slow and dependent on npm, so weekly and on demand rather than on every push.
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test:install

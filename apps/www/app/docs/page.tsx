@@ -76,7 +76,7 @@ const NAV = [
   ["use-list-formatting", "useListFormatting"],
   ["stickies-format", "Stickies format"],
   ["stickies-theme", "Theme"],
-  ["agents", "For agents"],
+  ["stickies-skill", "Agent skill"],
 ]
 
 export default function Docs() {
@@ -304,11 +304,19 @@ return <textarea {...list} />`}</Code>
           <Code>{`<div data-sticky-color="blue" className="bg-sticky-paper text-sticky-ink sticky-shadow" />`}</Code>
         </Section>
 
-        <Section id="agents" title="For agents">
+        <Section id="stickies-skill" title="Agent skill">
           <P>
-            <a href="/llms.txt" className="underline underline-offset-2">llms.txt</a> sums up the format. The{" "}
-            <a href="/skill/SKILL.md" className="underline underline-offset-2">Stickies skill</a> lets an agent make notes, check them, and put them on
-            the clipboard in every format, ready to paste onto a board like this one.
+            The <a href="/skill/SKILL.md" className="underline underline-offset-2">Stickies skill</a> lets an agent make notes, check them against
+            the spec, save them as a <code>.canvas</code> file, and put them on the clipboard in every format, ready to paste onto a board like this
+            one. For any agent (Claude Code, Codex, Cursor and others):
+          </P>
+          <Code>npx skills add getmurmur/stickies</Code>
+          <P>
+            Or into a project&apos;s <code>.claude/skills</code>, from the registry, shadcn project or not:
+          </P>
+          <Install item="stickies-skill" />
+          <P>
+            <a href="/llms.txt" className="underline underline-offset-2">llms.txt</a> sums up the format for any model.
           </P>
         </Section>
       </main>

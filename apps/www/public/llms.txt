@@ -24,6 +24,9 @@ Key points for agents:
 
 ## Agent Skill
 
+Install for any agent with `npx skills add getmurmur/stickies`, or into a project's `.claude/skills` with `npx shadcn@latest add https://stickies.live/r/stickies-skill.json`.
+
+
 - [SKILL.md](https://stickies.live/skill/SKILL.md): an Agent Skill for making, checking and handing over Stickies notes
 - [Format reference](https://stickies.live/skill/references/format.md): the fields and colours on one page
 - [stickies.mjs](https://stickies.live/skill/scripts/stickies.mjs): a helper script with no dependencies (make, validate, text, html, and copy on macOS)

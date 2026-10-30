@@ -78,6 +78,19 @@ const items = [
     registryDependencies: ["@stickies/sticky-note", "@stickies/use-sticky-notes", "@stickies/use-canvas-pan", "@stickies/use-stickies-clipboard"],
     files: [{ path: "registry/stickies/blocks/sticky-board/sticky-board.tsx", type: "registry:component" }],
   },
+  {
+    // A universal item: every file has its own target, so it installs into any project,
+    // shadcn or not. The source is the skill at the repo's root, so there's one copy.
+    name: "stickies-skill",
+    type: "registry:item",
+    title: "Stickies skill",
+    description: "An Agent Skill for Claude Code: make sticky notes, check them, and put them on the clipboard to paste into any app.",
+    files: ["SKILL.md", "references/format.md", "scripts/stickies.mjs"].map((file) => ({
+      path: `../../skills/stickies/${file}`,
+      type: "registry:file",
+      target: `~/.claude/skills/stickies/${file}`,
+    })),
+  },
 ]
 
 // Inside one registry, dependencies are given as URLs while @stickies isn't in shadcn's

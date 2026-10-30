@@ -292,6 +292,35 @@
       "categories": [
         "stickies"
       ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "stickies-skill",
+      "type": "registry:item",
+      "title": "Stickies skill",
+      "description": "An Agent Skill for Claude Code: make sticky notes, check them, and put them on the clipboard to paste into any app.",
+      "files": [
+        {
+          "path": "../../skills/stickies/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/stickies/SKILL.md"
+        },
+        {
+          "path": "../../skills/stickies/references/format.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/stickies/references/format.md"
+        },
+        {
+          "path": "../../skills/stickies/scripts/stickies.mjs",
+          "type": "registry:file",
+          "target": "~/.claude/skills/stickies/scripts/stickies.mjs"
+        }
+      ],
+      "author": "Stickies <https://stickies.live>",
+      "docs": "See https://stickies.live/docs#stickies-skill for usage.",
+      "categories": [
+        "stickies"
+      ]
     }
   ]
 }

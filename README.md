@@ -16,10 +16,16 @@ React components, from the registry:
 npx shadcn@latest add https://stickies.live/r/sticky-board.json
 ```
 
-The agent skill:
+The agent skill, for any agent:
 
 ```sh
 npx skills add getmurmur/stickies
+```
+
+Or into a project's `.claude/skills`, from the registry:
+
+```sh
+npx shadcn@latest add https://stickies.live/r/stickies-skill.json
 ```
 
 ## What's here
