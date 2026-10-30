@@ -17,10 +17,10 @@ import {
   toHtml,
   toText,
   validate,
-} from "../registry/stickies/lib/stickies-format"
+} from "../../apps/www/registry/stickies/lib/stickies-format"
 
 const FIXTURES = join(import.meta.dir, "fixtures")
-const SCRIPT = join(import.meta.dir, "../skills/stickies/scripts/stickies.mjs")
+const SCRIPT = join(import.meta.dir, "../../skills/stickies/scripts/stickies.mjs")
 const fixtures = readdirSync(FIXTURES).filter((f) => f.endsWith(".json"))
 
 describe("validation agrees with the skill's script", () => {

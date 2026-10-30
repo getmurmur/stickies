@@ -1,5 +1,5 @@
 // Writes registry.json (the items `shadcn build` turns into public/r/*.json) and the site's
-// copy of the theme, both from registry/stickies. Run by `pnpm registry`.
+// copy of the theme, both from registry/stickies. Run by `pnpm registry`, before every build.
 
 import { writeFileSync } from "node:fs"
 import { themeCss, themeCssVars, themeStylesheet } from "../registry/stickies/theme.mjs"
@@ -99,6 +99,7 @@ const registry = {
   })),
 }
 
-writeFileSync(new URL("registry.json", root), `${JSON.stringify(registry, null, 2)}\n`)
+// REGISTRY_JSON writes it elsewhere, for a test build against a local server (packages/tests).
+writeFileSync(process.env.REGISTRY_JSON ?? new URL("registry.json", root), `${JSON.stringify(registry, null, 2)}\n`)
 writeFileSync(new URL("registry/stickies/theme.css", root), themeStylesheet())
 console.log(`registry.json: ${items.length} items, dependencies at ${base}`)

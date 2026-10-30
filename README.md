@@ -8,22 +8,44 @@ Every Stickies document is also a valid [JSON Canvas](https://jsoncanvas.org) fi
 
 Copied notes also go on the clipboard as HTML and plain text, so they paste properly into apps that don't support the format yet.
 
-- [SPEC.md](SPEC.md): the draft spec (0.1)
-- [public/schema/0.1.json](public/schema/0.1.json): JSON Schema
-- [examples/](examples/): example documents
-- [skills/stickies/](skills/stickies/): an Agent Skill so agents can make, check and copy Stickies notes
-- [registry/stickies/](registry/stickies/): a shadcn registry with a composable sticky note, a board, and hooks ([docs](https://stickies.live/docs))
+## Use it
 
-## React components
+React components, from the registry:
 
 ```sh
 npx shadcn@latest add https://stickies.live/r/sticky-board.json
 ```
 
+The agent skill:
+
+```sh
+npx skills add getmurmur/stickies
+```
+
+## What's here
+
+```
+spec/              the spec, its JSON Schema, and example documents
+skills/stickies/   an Agent Skill for making, checking and copying Stickies notes
+apps/www/          stickies.live: the site, the docs, and the registry
+  registry/        the registry's source: format library, theme, hooks, note and board
+packages/tests/    tests for the format library, and the install check
+```
+
+- [spec/SPEC.md](spec/SPEC.md): the draft spec (0.1)
+- [spec/schema/0.1.json](spec/schema/0.1.json): JSON Schema
+- [spec/examples/](spec/examples/): example documents
+- [apps/www/registry/stickies/](apps/www/registry/stickies/): the registry's source ([docs](https://stickies.live/docs))
+
 ## Working on it
 
-- `pnpm dev`: the site, on port 1450.
-- `pnpm registry`: writes `registry.json` and the theme from `registry/stickies`, then builds `public/r`. Runs before every build.
-- `pnpm test`: the format library's tests, which also check it agrees with the skill's script.
+A pnpm workspace. From the root:
 
-Status: early draft, started from Murmur's sticky notes.
+- `pnpm dev`: the site, on port 1450.
+- `pnpm build`: builds the registry, then the site.
+- `pnpm registry`: writes `registry.json` and the theme from `apps/www/registry/stickies`, then builds `apps/www/public/r`.
+- `pnpm test`: the format library's tests, which also check it agrees with the skill's script.
+- `pnpm test:install`: installs the registry into a brand-new Next.js and shadcn app and builds it. Slow; needs the network.
+- `pnpm typecheck`: every package.
+
+Status: early draft, started by [Murmur](https://getmurmur.dev).

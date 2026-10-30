@@ -70,21 +70,23 @@ These are my recommendations. Each one is worth confirming before work starts.
 ## Repo layout
 
 ```
-registry.json                   # the item list, read by `shadcn build`
-registry/stickies/
-  lib/stickies-format.ts
-  hooks/use-pointer-drag.ts
-  hooks/use-sticky-notes.ts
-  hooks/use-canvas-pan.ts
-  hooks/use-stickies-clipboard.ts
-  hooks/use-list-formatting.ts
-  ui/sticky-note.tsx
-  blocks/sticky-board/…
-  theme.css                     # source for stickies-theme's css and cssVars
-public/r/                       # built item JSON, served at /r/{name}.json
+apps/www/
+  registry.json                 # the item list, written by scripts/registry.mjs, read by `shadcn build`
+  registry/stickies/
+    lib/stickies-format.ts
+    hooks/use-pointer-drag.ts
+    hooks/use-sticky-notes.ts
+    hooks/use-canvas-pan.ts
+    hooks/use-stickies-clipboard.ts
+    hooks/use-list-formatting.ts
+    ui/sticky-note.tsx
+    blocks/sticky-board/…
+    theme.mjs                   # the theme, once; becomes stickies-theme's css and cssVars, and theme.css
+  public/r/                     # built item JSON, served at /r/{name}.json (not in git)
+packages/tests/                 # format tests and the install check
 ```
 
-The site's `components/` and `lib/notes.ts` go away, and the page imports from `registry/stickies`.
+The site imports from `registry/stickies`, so it runs the code people install.
 
 ## Status (28 October 2026)
 
