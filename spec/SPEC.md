@@ -4,6 +4,8 @@ A small, open format for moving sticky notes between apps by copy and paste, dra
 
 Status: draft. Anything here can change before 1.0.
 
+Works with [Murmur](https://getmurmur.dev).
+
 ## 1. Goals
 
 - **Works today.** A copied note pastes as readable text or a styled box into apps that have never heard of this format.
@@ -232,7 +234,14 @@ For tool input, `x`, `y`, `width` and `height` are optional; the app places note
 - Receivers MUST NOT open `source.url` or links in `text` without the person asking.
 - Receivers SHOULD set a size limit (for example 1 MB per document, 1,000 notes) and refuse anything larger.
 
-## 11. Open questions
+## 11. Implementations
+
+| App | Supports |
+|---|---|
+| [Murmur](https://getmurmur.dev) (macOS) | Copy and paste of notes on maps and boards: writes the Stickies JSON (`live.stickies.json`), HTML and plain text, and reads them back. Colour, state and author kept. |
+| [stickies.live](https://stickies.live) | Copy and paste between boards and other apps, through the [registry](https://stickies.live/docs)'s `use-stickies-clipboard`. |
+
+## 12. Open questions
 
 1. **Name.** "Stickies" is also the name of Apple's Stickies app. Fine for a format, but search results will be crowded, so docs should say "the Stickies format" or "stickies.live".
 2. **Time format.** ISO strings are easier to read; milliseconds are what Murmur and many apps store. ISO is the current pick.
