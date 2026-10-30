@@ -21,7 +21,7 @@ const SEEDS: (Partial<StickyNoteData> & { minutesAgo: number })[] = [
   { id: "registry", text: "npx shadcn add @stickies/sticky-board", x: 60, y: 470, colorName: "yellow", state: "done", minutesAgo: 3 },
   { id: "name", text: "Does the name clash with Apple's Stickies?", x: 350, y: 440, colorName: "pink", minutesAgo: 9 },
   { id: "copies", text: "Copies only for now. Live sync is a different, harder problem.", x: 640, y: 460, colorName: "purple", minutesAgo: 12 },
-  { id: "try", text: "Drag me by the top.\nDouble-click anywhere for a new note.", x: 920, y: 430, colorName: "green", minutesAgo: 0 },
+  { id: "try", text: "Drag me by the top.\nDouble-click or right-click anywhere for a new note.", x: 920, y: 430, colorName: "green", minutesAgo: 0 },
 ]
 
 export function seedNotes(now = Date.now()): StickyNoteData[] {

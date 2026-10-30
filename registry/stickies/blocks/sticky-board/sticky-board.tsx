@@ -1,7 +1,8 @@
 "use client"
 
-import { createContext, type ReactNode, useContext, useEffect, useRef, useState } from "react"
-import { useCanvasPan } from "@/registry/stickies/hooks/use-canvas-pan"
+import { createContext, type ReactNode, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { createPortal } from "react-dom"
+import { type Pan, useCanvasPan } from "@/registry/stickies/hooks/use-canvas-pan"
 import { useStickiesClipboard } from "@/registry/stickies/hooks/use-stickies-clipboard"
 import { type StickyNotesApi, useStickyNotes } from "@/registry/stickies/hooks/use-sticky-notes"
 import { placeNotes, type StickiesSource, STICKY_DEFAULT_SIZE, type StickyNoteData } from "@/registry/stickies/lib/stickies-format"
@@ -79,9 +80,98 @@ const editable = (el: EventTarget | null) =>
   el instanceof HTMLElement && (el.isContentEditable || el instanceof HTMLTextAreaElement || el instanceof HTMLInputElement)
 
 /**
+ * The board's right-click menu, at the pointer and kept on screen. It closes on a press
+ * outside it, Escape, scrolling, or the window losing focus. Its own events stop here, so a
+ * key pressed in it (Delete, say) never reaches the board behind.
+ */
+function BoardMenu({ x, y, onClose, children }: { x: number; y: number; onClose: () => void; children: ReactNode }) {
+  const menu = useRef<HTMLDivElement>(null)
+  const [place, setPlace] = useState({ x, y })
+
+  useLayoutEffect(() => {
+    const el = menu.current
+    if (!el) return
+    const { width, height } = el.getBoundingClientRect()
+    setPlace({
+      x: Math.max(4, Math.min(x, window.innerWidth - width - 4)),
+      y: Math.max(4, Math.min(y, window.innerHeight - height - 4)),
+    })
+    el.querySelector<HTMLElement>('[role="menuitem"]')?.focus()
+  }, [x, y])
+
+  useEffect(() => {
+    const outside = (e: PointerEvent) => {
+      if (!menu.current?.contains(e.target as Node)) onClose()
+    }
+    const escape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    document.addEventListener("pointerdown", outside, true)
+    document.addEventListener("keydown", escape)
+    window.addEventListener("wheel", onClose, { passive: true })
+    window.addEventListener("resize", onClose)
+    window.addEventListener("blur", onClose)
+    return () => {
+      document.removeEventListener("pointerdown", outside, true)
+      document.removeEventListener("keydown", escape)
+      window.removeEventListener("wheel", onClose)
+      window.removeEventListener("resize", onClose)
+      window.removeEventListener("blur", onClose)
+    }
+  }, [onClose])
+
+  return createPortal(
+    <div
+      ref={menu}
+      role="menu"
+      data-slot="sticky-board-menu"
+      className="fixed z-50 min-w-36 origin-top-left rounded-md bg-popover p-1 text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-none transition-[opacity,scale] duration-150 ease-out starting:scale-95 starting:opacity-0"
+      style={{ left: place.x, top: place.y }}
+      onPointerDown={(e) => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
+      onContextMenu={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+      onKeyDown={(e) => {
+        e.stopPropagation()
+        if (e.key === "Escape" || e.key === "Tab") {
+          e.preventDefault()
+          return onClose()
+        }
+        if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return
+        e.preventDefault()
+        const items = [...(menu.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? [])]
+        const at = items.indexOf(document.activeElement as HTMLElement)
+        items[(at + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length]?.focus()
+      }}
+    >
+      {children}
+    </div>,
+    document.body,
+  )
+}
+
+function BoardMenuItem({ onSelect, children }: { onSelect: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      onClick={onSelect}
+      // The highlight follows the pointer, as in a native menu.
+      onPointerMove={(e) => e.currentTarget.focus()}
+      className="flex w-full cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none select-none focus:bg-accent focus:text-accent-foreground"
+    >
+      {children}
+    </button>
+  )
+}
+
+/**
  * A canvas of sticky notes. Drag a note by its top, resize from its corner, drag the
- * background to look around, and double-click to add a note. Click to select, ⇧-click
- * for more; ⌘C, ⌘X and ⌘V copy, cut and paste in the Stickies format; Delete removes.
+ * background to look around, and double-click or right-click to add a note. Click to
+ * select, ⇧-click for more; ⌘C, ⌘X and ⌘V copy, cut and paste in the Stickies format;
+ * Delete removes.
  */
 export function StickyBoard({
   defaultNotes,
@@ -102,6 +192,9 @@ export function StickyBoard({
   const { pan, setPan, panning, handlers, toCanvas } = useCanvasPan()
   const pointer = useRef<{ x: number; y: number } | null>(null)
   const [fresh, setFresh] = useState<string | null>(null)
+  /** The right-click menu: where it opened on screen, and that point on the board. */
+  const [menu, setMenu] = useState<{ x: number; y: number; at: Pan } | null>(null)
+  const closeMenu = useRef(() => setMenu(null)).current
   const centred = useRef(false)
   /**
    * Notes keep the place in the page they first had: raising one only changes its z-index.
@@ -145,12 +238,19 @@ export function StickyBoard({
   const onBackground = (target: EventTarget, current: EventTarget) =>
     target === current || (target instanceof HTMLElement && target.hasAttribute("data-pan-surface"))
 
+  /** A new, selected note with its corner here, ready to type in. */
+  function addAt(x: number, y: number) {
+    const note = board.add({ x: Math.round(x), y: Math.round(y) })
+    board.setSelected([note.id])
+    setFresh(note.id)
+  }
+
   return (
     <StickyBoardContext.Provider value={{ ...board, pan, setPan, copy }}>
       <div
         ref={surface}
         data-slot="sticky-board"
-        className={cn("relative h-full w-full touch-none overflow-hidden select-none", panning ? "cursor-grabbing" : "cursor-grab", className)}
+        className={cn("relative isolate h-full w-full touch-none overflow-hidden select-none", panning ? "cursor-grabbing" : "cursor-grab", className)}
         onPointerDown={(e) => {
           handlers.onPointerDown(e)
           if (!onBackground(e.target, e.currentTarget)) return
@@ -169,9 +269,13 @@ export function StickyBoard({
         onDoubleClick={(e) => {
           if (!onBackground(e.target, e.currentTarget)) return
           const at = toCanvas(e, surface.current)
-          const note = board.add({ x: Math.round(at.x - STICKY_DEFAULT_SIZE.width / 2), y: Math.round(at.y - 14) })
-          board.setSelected([note.id])
-          setFresh(note.id)
+          addAt(at.x - STICKY_DEFAULT_SIZE.width / 2, at.y - 14)
+        }}
+        onContextMenu={(e) => {
+          // On a note, the browser's own menu (Copy, Paste, spelling) stays.
+          if (!onBackground(e.target, e.currentTarget)) return
+          e.preventDefault()
+          setMenu({ x: e.clientX, y: e.clientY, at: toCanvas(e, surface.current) })
         }}
         onKeyDown={(e) => {
           if (editable(e.target)) return
@@ -209,6 +313,19 @@ export function StickyBoard({
         </div>
         {children}
       </div>
+      {menu && (
+        <BoardMenu x={menu.x} y={menu.y} onClose={closeMenu}>
+          <BoardMenuItem
+            onSelect={() => {
+              // As in Murmur: the corner just up and left of the pointer, so it lands on the header.
+              addAt(menu.at.x - 20, menu.at.y - 14)
+              closeMenu()
+            }}
+          >
+            New note here
+          </BoardMenuItem>
+        </BoardMenu>
+      )}
     </StickyBoardContext.Provider>
   )
 }

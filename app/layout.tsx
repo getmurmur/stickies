@@ -15,8 +15,8 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className="overscroll-none">
+      <body className="overscroll-none">{children}</body>
     </html>
   )
 }

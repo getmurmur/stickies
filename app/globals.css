@@ -10,6 +10,11 @@
   --border: #e4e4e7;
   --ring: #8b8d98;
   --code: #f4f4f5;
+  /* Menus, as shadcn names them. */
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
+  --accent: #e7e6e2;
+  --accent-foreground: var(--foreground);
   color-scheme: light;
 }
 
@@ -23,9 +28,12 @@
   --color-border: var(--border);
   --color-ring: var(--ring);
   --color-code: var(--code);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
 }
 
 body {
   @apply bg-background text-foreground font-sans antialiased;
-  overscroll-behavior: none;
 }

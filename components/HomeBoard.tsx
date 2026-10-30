@@ -17,7 +17,7 @@ function Overlay() {
             data-sticky-color="yellow"
             className="inline-block size-4 rounded-[4px] border border-sticky-edge bg-[linear-gradient(to_bottom,var(--sticky-header)_32%,var(--sticky-paper)_32%)]"
           />
-          <span className="text-[15px] font-medium tracking-tight">stickies.live</span>
+          <span className="text-[15px] font-medium">stickies.live</span>
           <span className="rounded-full border border-current/15 px-2 py-0.5 text-[11px] text-muted">Draft 0.1</span>
         </div>
         <nav className="pointer-events-auto flex items-center gap-1 text-[13px] text-muted">
@@ -36,7 +36,7 @@ function Overlay() {
       </header>
       <p className="pointer-events-none absolute inset-x-0 bottom-5 z-[10000] text-center text-[12px] text-muted">
         Drag notes by the top · Drag the background to look around
-        <span className="max-sm:hidden"> · Double-click to add a note · ⌘C copies the selected notes</span>
+        <span className="max-sm:hidden"> · Double-click or right-click to add a note · ⌘C copies the selected notes</span>
       </p>
     </>
   )

@@ -26,7 +26,7 @@ function Install({ item }: { item: string }) {
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section id={id} className="scroll-mt-8 space-y-4 border-t border-border pt-10">
-      <h2 className="text-[20px] font-semibold tracking-tight">
+      <h2 className="text-[20px] font-semibold">
         <a href={`#${id}`} className="hover:underline">
           {title}
         </a>
@@ -83,7 +83,7 @@ export default function Docs() {
   return (
     <div className="mx-auto flex max-w-6xl gap-12 px-6 py-10">
       <aside className="sticky top-10 hidden h-fit w-48 shrink-0 space-y-1 text-[13px] md:block">
-        <Link href="/" className="mb-6 flex items-center gap-2.5 text-[15px] font-medium tracking-tight">
+        <Link href="/" className="mb-6 flex items-center gap-2.5 text-[15px] font-medium">
           <span
             aria-hidden
             data-sticky-color="yellow"
@@ -103,7 +103,7 @@ export default function Docs() {
           <Link href="/" className="text-[13px] text-muted hover:text-foreground md:hidden">
             ← stickies.live
           </Link>
-          <h1 className="text-[32px] font-semibold tracking-tight">Sticky notes for any React app</h1>
+          <h1 className="text-[32px] font-semibold">Sticky notes for any React app</h1>
           <P>
             A shadcn registry: a composable sticky note, a full board, and the hooks underneath, after Murmur&apos;s notes. Notes copy and paste in
             the <a href="/spec.md" className="underline underline-offset-2">Stickies format</a>, so they move between any apps that use it, and still
@@ -129,7 +129,7 @@ export default function Docs() {
 
         <Section id="sticky-board" title="Sticky board">
           <P>
-            A canvas of notes. Drag a note by its top, resize from the corner, drag the background to look around, double-click to add a note. Click
+            A canvas of notes. Drag a note by its top, resize from the corner, drag the background to look around, double-click or right-click to add a note. Click
             to select, ⇧-click for more, ⌘A for all. ⌘C, ⌘X and ⌘V copy, cut and paste in the Stickies format, and Delete removes. It fills its
             parent and saves to <code>localStorage</code> by default.
           </P>
