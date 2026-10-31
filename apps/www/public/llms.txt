@@ -12,7 +12,7 @@ Key points for agents:
 
 ## Spec
 
-- [Stickies 0.1 spec](https://stickies.live/spec.md): the full draft, including fields, colours, state, extensions, clipboard formats, MCP tools and security
+- [Stickies 0.1 spec](https://stickies.live/spec.md) (also at https://stickies.live/spec as a page): the full draft, including fields, colours, state, extensions, clipboard formats, MCP tools and security
 - [JSON Schema](https://stickies.live/schema/0.1.json): for checking a document
 - [Example document](https://stickies.live/examples/murmur-cluster.json): three notes and two arrows, copied from Murmur
 
@@ -21,6 +21,10 @@ Key points for agents:
 - [Docs](https://stickies.live/docs): a composable sticky note, a full board, and the hooks underneath, with copy and paste in the Stickies format
 - [Registry index](https://stickies.live/r/registry.json): every item; install one with `npx shadcn@latest add https://stickies.live/r/<name>.json`
 - [sticky-board](https://stickies.live/r/sticky-board.json): the whole board, with everything it uses
+
+## Adding Stickies to an app
+
+- [Prompt for coding agents](https://stickies.live/prompt.md): step-by-step instructions to add Stickies copy and paste to any app with notes or cards
 
 ## Agent Skill
 

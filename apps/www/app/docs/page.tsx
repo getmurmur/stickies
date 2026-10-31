@@ -3,6 +3,8 @@ import Link from "next/link"
 import type { ReactNode } from "react"
 import { BoardPreview } from "@/components/docs/BoardPreview"
 import { NotePreview } from "@/components/docs/NotePreview"
+import { CopyPrompt } from "@/components/site/CopyPrompt"
+import { readRepoFile } from "@/lib/repoFile"
 
 export const metadata: Metadata = {
   title: "Docs · stickies.live",
@@ -66,6 +68,7 @@ function Props({ rows }: { rows: [string, string, string][] }) {
 }
 
 const NAV = [
+  ["with-an-agent", "With an agent"],
   ["install", "Install"],
   ["sticky-board", "Sticky board"],
   ["sticky-note", "Sticky note"],
@@ -106,11 +109,24 @@ export default function Docs() {
           <h1 className="text-[32px] font-semibold">Sticky notes for any React app</h1>
           <P>
             A shadcn registry: a composable sticky note, a full board, and the hooks underneath, after Murmur&apos;s notes. Notes copy and paste in
-            the <a href="/spec.md" className="underline underline-offset-2">Stickies format</a>, so they move between any apps that use it, and still
+            the <a href="/spec" className="underline underline-offset-2">Stickies format</a>, so they move between any apps that use it, and still
             paste as coloured boxes or plain text everywhere else.
           </P>
           <BoardPreview />
         </header>
+
+        <Section id="with-an-agent" title="With an agent">
+          <P>
+            Give this prompt to your coding agent (Claude Code, Codex, Cursor and others) in any app with notes or cards. It reads the format, maps
+            your notes to it, and adds copy and paste that works with every app using Stickies.
+          </P>
+          <div className="flex flex-wrap items-center gap-3">
+            <CopyPrompt prompt={readRepoFile("apps/www/content/agent-prompt.md")} />
+            <a href="/prompt.md" className="text-[13px] text-muted underline underline-offset-2 hover:text-foreground">
+              Read the prompt
+            </a>
+          </div>
+        </Section>
 
         <Section id="install" title="Install">
           <P>Needs a shadcn project with Tailwind v4 and React 19. Add the whole board, and everything it uses comes with it:</P>

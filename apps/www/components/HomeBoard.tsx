@@ -2,11 +2,13 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { CopyPrompt } from "@/components/site/CopyPrompt"
+import { GITHUB } from "@/components/site/Mark"
 import { StickyBoard, useStickyBoard } from "@/registry/stickies/blocks/sticky-board/sticky-board"
 import { seedNotes } from "@/lib/seed"
 
 /** The page's header and hint, drawn over the board. */
-function Overlay() {
+function Overlay({ prompt }: { prompt: string }) {
   const { edited, reset } = useStickyBoard()
   return (
     <>
@@ -19,6 +21,7 @@ function Overlay() {
           />
           <span className="text-[15px] font-medium">stickies.live</span>
           <span className="rounded-full border border-current/15 px-2 py-0.5 text-[11px] text-muted">Draft 0.1</span>
+          <span className="ml-3 text-[13px] text-muted max-lg:hidden">An open format for moving sticky notes between apps</span>
         </div>
         <nav className="pointer-events-auto flex items-center gap-1 text-[13px] text-muted">
           {edited && (
@@ -29,9 +32,13 @@ function Overlay() {
           <Link href="/docs" className="rounded-md px-2 py-1 transition-colors hover:text-foreground">
             Docs
           </Link>
-          <a href="/spec.md" className="rounded-md px-2 py-1 transition-colors hover:text-foreground">
+          <Link href="/spec" className="rounded-md px-2 py-1 transition-colors hover:text-foreground">
             Spec
+          </Link>
+          <a href={GITHUB} className="rounded-md px-2 py-1 transition-colors hover:text-foreground max-sm:hidden">
+            GitHub
           </a>
+          <CopyPrompt prompt={prompt} className="ml-2 max-md:hidden" />
         </nav>
       </header>
       <p className="pointer-events-none absolute inset-x-0 bottom-5 z-[10000] text-center text-[12px] text-muted">
@@ -42,7 +49,7 @@ function Overlay() {
   )
 }
 
-export function HomeBoard() {
+export function HomeBoard({ prompt }: { prompt: string }) {
   const [defaults] = useState(seedNotes)
   return (
     <StickyBoard
@@ -51,7 +58,7 @@ export function HomeBoard() {
       storageKey="stickies.live:board"
       source={{ app: "stickies.live", url: "https://stickies.live" }}
     >
-      <Overlay />
+      <Overlay prompt={prompt} />
     </StickyBoard>
   )
 }
