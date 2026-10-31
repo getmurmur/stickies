@@ -79,6 +79,7 @@ const NAV = [
   ["use-list-formatting", "useListFormatting"],
   ["stickies-format", "Stickies format"],
   ["stickies-theme", "Theme"],
+  ["stickies-tldraw", "tldraw"],
   ["stickies-skill", "Agent skill"],
 ]
 
@@ -318,6 +319,29 @@ return <textarea {...list} />`}</Code>
           </P>
           <Install item="stickies-theme" />
           <Code>{`<div data-sticky-color="blue" className="bg-sticky-paper text-sticky-ink sticky-shadow" />`}</Code>
+        </Section>
+
+        <Section id="stickies-tldraw" title="tldraw">
+          <P>
+            Stickies copy and paste for <a href="https://tldraw.dev" className="underline underline-offset-2">tldraw</a>. Copying a selection of
+            sticky notes writes them as Stickies, so they paste onto a board like this one, or into a doc as coloured boxes. Pasting Stickies
+            makes tldraw notes, keeping their colours, layout, state and author. tldraw&apos;s own styles travel with the notes, so tldraw to
+            tldraw loses nothing. Anything else is left to tldraw.
+          </P>
+          <Install item="stickies-tldraw" />
+          <Code>{`
+import { Tldraw } from "tldraw"
+import { stickiesTldrawOptions } from "@/lib/stickies-tldraw"
+
+const options = stickiesTldrawOptions({ app: "My app" })
+
+export default function Board() {
+  return <Tldraw options={options} />
+}`}</Code>
+          <P>
+            tldraw needs its own licence key in production; see{" "}
+            <a href="https://tldraw.dev/community/license" className="underline underline-offset-2">tldraw&apos;s licence</a>.
+          </P>
         </Section>
 
         <Section id="stickies-skill" title="Agent skill">

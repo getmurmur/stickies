@@ -29,6 +29,7 @@
     "postcss": "^8.5.30",
     "shadcn": "^4.23.0",
     "tailwindcss": "^4.3.3",
+    "tldraw": "^5.6.0",
     "typescript": "^7.0.2"
   }
 }

@@ -1,0 +1,21 @@
+{
+  "name": "tldraw-example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 1452",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "next": "16.4.2",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tldraw": "^5.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

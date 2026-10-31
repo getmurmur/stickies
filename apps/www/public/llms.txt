@@ -21,6 +21,7 @@ Key points for agents:
 - [Docs](https://stickies.live/docs): a composable sticky note, a full board, and the hooks underneath, with copy and paste in the Stickies format
 - [Registry index](https://stickies.live/r/registry.json): every item; install one with `npx shadcn@latest add https://stickies.live/r/<name>.json`
 - [sticky-board](https://stickies.live/r/sticky-board.json): the whole board, with everything it uses
+- [stickies-tldraw](https://stickies.live/r/stickies-tldraw.json): Stickies copy and paste for tldraw's sticky notes (`<Tldraw options={stickiesTldrawOptions()} />`)
 
 ## Adding Stickies to an app
 

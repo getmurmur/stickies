@@ -295,6 +295,30 @@
     },
     {
       "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+      "name": "stickies-tldraw",
+      "type": "registry:lib",
+      "title": "Stickies for tldraw",
+      "description": "Copy and paste tldraw's sticky notes in the Stickies format: options for <Tldraw> that write notes as Stickies and turn pasted Stickies into notes.",
+      "dependencies": [
+        "tldraw"
+      ],
+      "registryDependencies": [
+        "https://stickies.live/r/stickies-format.json"
+      ],
+      "files": [
+        {
+          "path": "registry/stickies/integrations/tldraw/stickies-tldraw.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "author": "Stickies <https://stickies.live>",
+      "docs": "See https://stickies.live/docs#stickies-tldraw for usage.",
+      "categories": [
+        "stickies"
+      ]
+    },
+    {
+      "$schema": "https://ui.shadcn.com/schema/registry-item.json",
       "name": "stickies-skill",
       "type": "registry:item",
       "title": "Stickies skill",

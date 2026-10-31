@@ -34,7 +34,8 @@ npx shadcn@latest add https://stickies.live/r/stickies-skill.json
 spec/              the spec, its JSON Schema, and example documents
 skills/stickies/   an Agent Skill for making, checking and copying Stickies notes
 apps/www/          stickies.live: the site, the docs, and the registry
-  registry/        the registry's source: format library, theme, hooks, note and board
+  registry/        the registry's source: format library, theme, hooks, note, board and integrations
+apps/tldraw-example/  tldraw with Stickies copy and paste, for trying the integration (development only)
 packages/tests/    tests for the format library, and the install check
 ```
 
@@ -48,6 +49,7 @@ packages/tests/    tests for the format library, and the install check
 A pnpm workspace. From the root:
 
 - `pnpm dev`: the site, on port 1450.
+- `pnpm dev:tldraw`: the tldraw example, on port 1452.
 - `pnpm build`: builds the registry, then the site.
 - `pnpm registry`: writes `registry.json` and the theme from `apps/www/registry/stickies`, then builds `apps/www/public/r`.
 - `pnpm test`: the format library's tests, which also check it agrees with the skill's script.

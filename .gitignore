@@ -8,3 +8,6 @@ next-env.d.ts
 
 # Built by `pnpm registry` before every build.
 apps/www/public/r
+
+# Written by Next for coding agents.
+apps/*/AGENTS.md

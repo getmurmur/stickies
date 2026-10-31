@@ -5,6 +5,7 @@
   "packageManager": "pnpm@12.10.1",
   "scripts": {
     "dev": "pnpm --filter www dev",
+    "dev:tldraw": "pnpm --filter tldraw-example dev",
     "build": "pnpm --filter www build",
     "registry": "pnpm --filter www registry",
     "test": "pnpm --filter tests test",

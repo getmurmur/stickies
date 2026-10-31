@@ -79,6 +79,15 @@ const items = [
     files: [{ path: "registry/stickies/blocks/sticky-board/sticky-board.tsx", type: "registry:component" }],
   },
   {
+    name: "stickies-tldraw",
+    type: "registry:lib",
+    title: "Stickies for tldraw",
+    description: "Copy and paste tldraw's sticky notes in the Stickies format: options for <Tldraw> that write notes as Stickies and turn pasted Stickies into notes.",
+    dependencies: ["tldraw"],
+    registryDependencies: ["@stickies/stickies-format"],
+    files: [{ path: "registry/stickies/integrations/tldraw/stickies-tldraw.ts", type: "registry:lib" }],
+  },
+  {
     // A universal item: every file has its own target, so it installs into any project,
     // shadcn or not. The source is the skill at the repo's root, so there's one copy.
     name: "stickies-skill",

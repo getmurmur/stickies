@@ -42,6 +42,7 @@ These are my recommendations. Each one is worth confirming before work starts.
 | `use-stickies-clipboard` | `registry:hook` | ⌘C, ⌘X and ⌘V for selected notes. Writes Stickies JSON, HTML and plain text. Reads Stickies JSON first, then `data-stickies` in HTML, then plain text (one note per paragraph). | `stickies-format` |
 | `use-list-formatting` | `registry:hook` | Murmur's typing helpers: "- " becomes a bullet, and Return continues a list. | none |
 | `sticky-note` | `registry:ui` | The composable note (see below). | `stickies-theme`, `use-pointer-drag`, `use-list-formatting`, `utils`; npm `lucide-react` |
+| `stickies-tldraw` | `registry:lib` | Copy and paste for tldraw's sticky notes, as `<Tldraw options>`. | `stickies-format`; npm `tldraw` |
 | `sticky-board` | `registry:block` | The full canvas from the demo: notes, panning, double-click to add, clipboard, saving. | all of the above |
 
 ## The note's API
