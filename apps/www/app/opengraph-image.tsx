@@ -17,8 +17,8 @@ export default function OpenGraphImage() {
     <div style={{ width: "100%", height: "100%", display: "flex", background: "#fcfcfd", position: "relative", fontFamily: "sans-serif" }}>
       <div style={{ position: "absolute", left: 80, top: 0, bottom: 0, width: 500, display: "flex", flexDirection: "column", justifyContent: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <div style={{ width: 48, height: 48, borderRadius: 11, border: "2px solid #e0cf82", background: "#fdf6c8", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-            <div style={{ height: 15, background: "#f2e08f" }} />
+          <div style={{ width: 48, height: 48, borderRadius: 12, border: "3px solid #e8d995", background: "#fdf6c8", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ height: "32%", background: "#f6e9a6" }} />
           </div>
           <div style={{ fontSize: 44, fontWeight: 600, color: "#1c2024" }}>stickies.live</div>
         </div>
