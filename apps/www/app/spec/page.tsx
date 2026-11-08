@@ -45,6 +45,9 @@ export default function Spec() {
           <Link href="/docs" className="block py-1 text-muted hover:text-foreground">
             Docs
           </Link>
+          <Link href="/styles" className="block py-1 text-muted hover:text-foreground">
+            Styles
+          </Link>
           <a href="/spec.md" className="block py-1 text-muted hover:text-foreground">
             Spec as Markdown
           </a>

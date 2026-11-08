@@ -32,6 +32,9 @@ function Overlay({ prompt }: { prompt: string }) {
           <Link href="/docs" className="rounded-md px-2 py-1 transition-colors hover:text-foreground">
             Docs
           </Link>
+          <Link href="/styles" className="rounded-md px-2 py-1 transition-colors hover:text-foreground max-sm:hidden">
+            Styles
+          </Link>
           <Link href="/spec" className="rounded-md px-2 py-1 transition-colors hover:text-foreground">
             Spec
           </Link>

@@ -1,0 +1,489 @@
+/* The /styles page's four looks for the same notes. Each is scoped by its board's
+   data-skin, and unlayered, so it wins over the note's own Tailwind classes. */
+
+/* ================================================================ Liquid Glass */
+
+[data-skin="glass"] {
+  --light-x: -9999px;
+  --light-y: -9999px;
+  background: #241a3d;
+}
+
+[data-skin="glass"] [data-slot="wallpaper"] {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg, rgb(255 255 255 / 0.16) 0 1px, transparent 1px 44px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.16) 0 1px, transparent 1px 44px),
+    linear-gradient(135deg, #ff8a3d 0%, #ff4d8d 36%, #8a5cff 68%, #22b5ff 100%);
+}
+
+[data-skin="glass"] [data-orb] {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+[data-skin="glass"] [data-orb="1"] {
+  width: 340px;
+  height: 340px;
+  left: 4%;
+  top: -110px;
+  background: radial-gradient(circle at 32% 30%, #fff6c2, #ffc43d 42%, #ff7a00 100%);
+  animation: glass-drift-a 26s ease-in-out infinite alternate;
+}
+[data-skin="glass"] [data-orb="2"] {
+  width: 250px;
+  height: 250px;
+  right: 6%;
+  top: 30px;
+  background: radial-gradient(circle at 32% 30%, #d4ffe0, #3ee08f 48%, #05905a 100%);
+  animation: glass-drift-b 32s ease-in-out infinite alternate;
+}
+[data-skin="glass"] [data-orb="3"] {
+  width: 440px;
+  height: 440px;
+  left: 36%;
+  bottom: -250px;
+  background: radial-gradient(circle at 36% 30%, #dfe4ff, #6d7cff 52%, #3a2bb8 100%);
+  animation: glass-drift-a 38s ease-in-out infinite alternate-reverse;
+}
+[data-skin="glass"] [data-orb="4"] {
+  width: 190px;
+  height: 190px;
+  left: -50px;
+  bottom: 50px;
+  background: radial-gradient(circle at 32% 30%, #ffe0f0, #ff5fa8 50%, #c81e6a 100%);
+  animation: glass-drift-b 28s ease-in-out infinite alternate-reverse;
+}
+
+[data-skin="glass"] [data-slot="wallpaper-type"] {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -52%;
+  font-size: clamp(120px, 21vw, 270px);
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgb(255 255 255 / 0.94);
+}
+
+@keyframes glass-drift-a {
+  to {
+    transform: translate(70px, 40px);
+  }
+}
+@keyframes glass-drift-b {
+  to {
+    transform: translate(-60px, 50px);
+  }
+}
+
+[data-skin="glass"] [data-slot="sticky-note"] {
+  background: transparent;
+  border: 0;
+  border-radius: 26px;
+  box-shadow:
+    0 1px 1px rgb(30 10 60 / 0.06),
+    0 10px 20px -8px rgb(30 10 60 / 0.25),
+    0 32px 60px -24px rgb(30 10 60 / 0.4);
+  transition:
+    box-shadow 300ms cubic-bezier(0.23, 1, 0.32, 1),
+    scale 450ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-lifted] {
+  scale: 1.04;
+  box-shadow:
+    0 2px 3px rgb(30 10 60 / 0.06),
+    0 18px 30px -10px rgb(30 10 60 / 0.3),
+    0 50px 90px -30px rgb(30 10 60 / 0.5);
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-selected] {
+  box-shadow:
+    0 0 0 2px rgb(255 255 255 / 0.9),
+    0 10px 20px -8px rgb(30 10 60 / 0.25),
+    0 32px 60px -24px rgb(30 10 60 / 0.4);
+}
+
+/* The pane: refracted in Chromium (an inline backdrop-filter), frosted elsewhere. */
+[data-skin="glass"] [data-slot="glass"] {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  backdrop-filter: blur(14px) saturate(180%);
+  background-color: color-mix(in oklab, var(--glass-tint) 30%, rgb(255 255 255 / 0.42));
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow:
+    inset 0 0 0 0.5px rgb(255 255 255 / 0.4),
+    inset 0 0 26px -4px color-mix(in oklab, var(--glass-tint) 55%, transparent),
+    inset 0 -24px 36px -30px rgb(255 255 255 / 0.55);
+}
+/* Glass takes the palette as vivid tints; the words stay dark. */
+[data-skin="glass"] [data-slot="sticky-note"] {
+  --glass-tint: #ffd60a;
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-sticky-color="blue"] {
+  --glass-tint: #0a84ff;
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-sticky-color="green"] {
+  --glass-tint: #30d158;
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-sticky-color="pink"] {
+  --glass-tint: #ff375f;
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-sticky-color="purple"] {
+  --glass-tint: #bf5af2;
+}
+[data-skin="glass"] [data-slot="sticky-note"][data-sticky-color="grey"] {
+  --glass-tint: #8e8e93;
+}
+/* Light from the pointer, in board coordinates less the note's own place. */
+[data-skin="glass"] [data-slot="glass"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    380px circle at calc(var(--light-x) - var(--note-x, 0px)) calc(var(--light-y) - var(--note-y, 0px)),
+    rgb(255 255 255 / 0.32),
+    transparent 65%
+  );
+}
+
+[data-skin="glass"] [data-slot="sticky-note-header"],
+[data-skin="glass"] [data-slot="sticky-note-footer"] {
+  background: transparent;
+}
+[data-skin="glass"] [data-slot="sticky-note-header"] {
+  height: 30px;
+  padding-left: 16px;
+  padding-right: 10px;
+}
+[data-skin="glass"] [data-slot="sticky-note-text"] {
+  padding-top: 6px;
+  padding-left: 18px;
+  padding-right: 18px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 23px;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 0.3);
+}
+[data-skin="glass"] [data-slot="sticky-note-footer"] {
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+/* ================================================================ Paper */
+
+[data-skin="paper"] {
+  background:
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0.06) 0 2px, transparent 2px 9px),
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.05) 0 1px, transparent 1px 23px),
+    linear-gradient(180deg, #92623a, #6c4224);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.25),
+    inset 0 -2px 4px rgb(0 0 0 / 0.35),
+    0 12px 30px -14px rgb(60 30 10 / 0.55);
+}
+[data-skin="paper"] [data-slot="cork"],
+[data-skin="paper"] [data-slot="sticky-board"] {
+  inset: 14px;
+  border-radius: 6px;
+}
+[data-skin="paper"] [data-slot="cork"] {
+  position: absolute;
+  background-color: #c79560;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='d'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .32 0 0 0 0 .17 0 0 0 0 .05 1.9 0 0 0 -.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23d)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='l'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95 0 0 0 0 .8 0 0 0 0 .58 0 1.8 0 0 -1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23l)'/%3E%3C/svg%3E");
+  box-shadow:
+    inset 0 2px 6px rgb(0 0 0 / 0.5),
+    inset 0 0 60px rgb(70 35 10 / 0.35);
+}
+
+/* Paper colours, and ballpoint ink. */
+[data-skin="paper"] [data-sticky-color] {
+  --sticky-paper: #fff27d;
+  --sticky-ink: #213a85;
+  --sticky-meta: rgb(33 58 133 / 0.6);
+  --sticky-edge: rgb(0 0 0 / 0.18);
+}
+[data-skin="paper"] [data-sticky-color="blue"] {
+  --sticky-paper: #a9d9ff;
+}
+[data-skin="paper"] [data-sticky-color="green"] {
+  --sticky-paper: #c2f0a6;
+}
+[data-skin="paper"] [data-sticky-color="pink"] {
+  --sticky-paper: #ffb6d3;
+}
+[data-skin="paper"] [data-sticky-color="purple"] {
+  --sticky-paper: #d8c0ff;
+}
+[data-skin="paper"] [data-sticky-color="grey"] {
+  --sticky-paper: #ece8de;
+}
+
+[data-skin="paper"] [data-slot="sticky-note"] {
+  --tilt: -1.6deg;
+  overflow: visible;
+  border: 0;
+  border-radius: 1px 1px 2px 2px;
+  font-family: var(--font-hand), "Marker Felt", "Comic Sans MS", cursive;
+  background-color: var(--sticky-paper);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E"),
+    linear-gradient(172deg, rgb(255 255 255 / 0.35) 0%, transparent 35%, rgb(0 0 0 / 0.07) 100%);
+  box-shadow:
+    0 1px 1px rgb(60 30 0 / 0.3),
+    0 3px 5px rgb(60 30 0 / 0.15),
+    0 20px 18px -14px rgb(40 18 0 / 0.6);
+  rotate: var(--tilt);
+  transition:
+    rotate 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    scale 300ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 300ms ease;
+}
+[data-skin="paper"] [data-slot="sticky-note"]:nth-child(2n) {
+  --tilt: 1.3deg;
+}
+[data-skin="paper"] [data-slot="sticky-note"]:nth-child(3n) {
+  --tilt: -0.5deg;
+}
+[data-skin="paper"] [data-slot="sticky-note"]:nth-child(5n) {
+  --tilt: 2.2deg;
+}
+[data-skin="paper"] [data-slot="sticky-note"][data-lifted] {
+  rotate: 0deg;
+  scale: 1.05;
+  box-shadow:
+    0 2px 2px rgb(60 30 0 / 0.2),
+    0 12px 16px -6px rgb(60 30 0 / 0.3),
+    0 40px 34px -20px rgb(40 18 0 / 0.6);
+}
+/* Picked: ringed in pen. */
+[data-skin="paper"] [data-slot="sticky-note"][data-selected] {
+  outline: 2px dashed rgb(33 58 133 / 0.55);
+  outline-offset: 7px;
+}
+
+/* The header is a strip of tape. */
+[data-skin="paper"] [data-slot="sticky-note-header"] {
+  position: relative;
+  height: 26px;
+  background: transparent;
+}
+[data-skin="paper"] [data-slot="sticky-note-header"]::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  width: 104px;
+  height: 30px;
+  translate: -50% 0;
+  rotate: -3deg;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 255 255 / 0.12) 0 2px, transparent 2px 5px),
+    linear-gradient(rgb(255 255 255 / 0.62), rgb(245 240 222 / 0.52));
+  clip-path: polygon(2% 0, 98% 0, 100% 14%, 97% 30%, 100% 48%, 97% 66%, 100% 84%, 98% 100%, 2% 100%, 0 84%, 3% 66%, 0 48%, 3% 30%, 0 14%);
+}
+[data-skin="paper"] [data-slot="sticky-note"]:nth-child(2n) [data-slot="sticky-note-header"]::before {
+  rotate: 2.5deg;
+  left: 44%;
+}
+
+[data-skin="paper"] [data-slot="sticky-note-text"] {
+  padding-top: 0;
+  padding-left: 18px;
+  padding-right: 18px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 27px;
+}
+[data-skin="paper"] [data-state="done"] [data-slot="sticky-note-text"] {
+  text-decoration: line-through;
+  text-decoration-color: rgb(205 40 40 / 0.85);
+  text-decoration-thickness: 2px;
+}
+[data-skin="paper"] [data-slot="sticky-note-footer"] {
+  gap: 8px;
+  font-size: 18px;
+}
+[data-skin="paper"] [data-slot="sticky-note-author"]::before {
+  content: "— ";
+}
+
+/* ================================================================ Minimal */
+
+[data-skin="minimal"] {
+  background: #f7f7f8;
+  box-shadow: inset 0 0 0 1px #ececef;
+}
+[data-skin="minimal"] [data-slot="sticky-note"] {
+  --sticky-ink: #1c2024;
+  --sticky-meta: #8b8d98;
+  background: #fff;
+  border: 1px solid #e6e6ea;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgb(16 24 40 / 0.04);
+  transition:
+    box-shadow 150ms ease,
+    border-color 150ms ease;
+}
+[data-skin="minimal"] [data-slot="sticky-note"][data-lifted] {
+  box-shadow: 0 10px 28px -10px rgb(16 24 40 / 0.18);
+}
+[data-skin="minimal"] [data-slot="sticky-note"][data-selected] {
+  border-color: #1c2024;
+  box-shadow: 0 0 0 0.5px #1c2024;
+}
+[data-skin="minimal"] [data-slot="sticky-note-header"] {
+  height: 26px;
+  background: transparent;
+}
+[data-skin="minimal"] [data-slot="sticky-note-text"] {
+  padding-top: 0;
+  font-size: 14px;
+  line-height: 21px;
+}
+[data-skin="minimal"] [data-slot="sticky-note-footer"] {
+  justify-content: flex-start;
+  gap: 8px;
+}
+[data-skin="minimal"] [data-slot="sticky-note-author"] {
+  color: var(--sticky-meta);
+}
+[data-skin="minimal"] [data-slot="sticky-note-state"] {
+  margin-left: auto;
+}
+[data-skin="minimal"] [data-slot="dot"] {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #e2b203;
+}
+[data-skin="minimal"] [data-slot="dot"][data-sticky-color="blue"] {
+  background: #3b82f6;
+}
+[data-skin="minimal"] [data-slot="dot"][data-sticky-color="green"] {
+  background: #22a35a;
+}
+[data-skin="minimal"] [data-slot="dot"][data-sticky-color="pink"] {
+  background: #e8508f;
+}
+[data-skin="minimal"] [data-slot="dot"][data-sticky-color="purple"] {
+  background: #8b5cf6;
+}
+[data-skin="minimal"] [data-slot="dot"][data-sticky-color="grey"] {
+  background: #a1a1aa;
+}
+
+/* ================================================================ Terminal */
+
+[data-skin="terminal"] {
+  background: #0d1014;
+  box-shadow: inset 0 0 0 1px #1d222a;
+}
+/* Scan lines and a vignette, over everything. */
+[data-skin="terminal"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(rgb(255 255 255 / 0.022) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.45));
+}
+
+/* Colour is the text: One Dark's colours for the palette. */
+[data-skin="terminal"] [data-sticky-color] {
+  --term: #e5c07b;
+  --sticky-paper: var(--term);
+  --sticky-edge: var(--term);
+  --sticky-ink: var(--term);
+  --sticky-meta: color-mix(in oklab, var(--term) 55%, #0d1014);
+  --sticky-header: transparent;
+}
+[data-skin="terminal"] [data-sticky-color="blue"] {
+  --term: #61afef;
+}
+[data-skin="terminal"] [data-sticky-color="green"] {
+  --term: #98c379;
+}
+[data-skin="terminal"] [data-sticky-color="pink"] {
+  --term: #e06c75;
+}
+[data-skin="terminal"] [data-sticky-color="purple"] {
+  --term: #c678dd;
+}
+[data-skin="terminal"] [data-sticky-color="grey"] {
+  --term: #abb2bf;
+}
+
+[data-skin="terminal"] [data-slot="sticky-note"] {
+  background: #0d1014;
+  border: 1px solid color-mix(in oklab, var(--term) 70%, #0d1014);
+  border-radius: 2px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  box-shadow: 0 0 22px -10px color-mix(in oklab, var(--term) 60%, transparent);
+  transition:
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+}
+[data-skin="terminal"] [data-slot="sticky-note"][data-lifted] {
+  box-shadow: 0 0 30px -6px color-mix(in oklab, var(--term) 60%, transparent);
+}
+[data-skin="terminal"] [data-slot="sticky-note"][data-selected] {
+  background: color-mix(in oklab, var(--term) 9%, #0d1014);
+  border-color: var(--term);
+  box-shadow: 0 0 28px -6px color-mix(in oklab, var(--term) 70%, transparent);
+}
+[data-skin="terminal"] [data-slot="sticky-note-header"] {
+  height: 26px;
+  padding-left: 12px;
+  font-size: 12px;
+  color: var(--term);
+  border-bottom: 1px dashed color-mix(in oklab, var(--term) 35%, transparent);
+}
+[data-skin="terminal"] [data-slot="sticky-note-text"] {
+  padding-top: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+  font-size: 13px;
+  line-height: 20px;
+  caret-color: var(--term);
+  text-shadow: 0 0 8px color-mix(in oklab, var(--term) 50%, transparent);
+}
+[data-skin="terminal"] [data-state="done"] [data-slot="sticky-note-text"] {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+[data-skin="terminal"] [data-slot="sticky-note-footer"] {
+  justify-content: flex-start;
+  padding-left: 12px;
+  font-size: 11px;
+}
+[data-skin="terminal"] [data-slot="sticky-note-footer"] time {
+  white-space: nowrap;
+}
+[data-skin="terminal"] [data-slot="sticky-note-colors"] button {
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-skin] *,
+  [data-skin] *::before,
+  [data-skin] *::after {
+    animation: none !important;
+    transition-duration: 0ms !important;
+  }
+}

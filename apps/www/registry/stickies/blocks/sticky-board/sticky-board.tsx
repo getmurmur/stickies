@@ -250,12 +250,18 @@ export function StickyBoard({
       <div
         ref={surface}
         data-slot="sticky-board"
-        className={cn("relative isolate h-full w-full touch-none overflow-hidden select-none", panning ? "cursor-grabbing" : "cursor-grab", className)}
+        // Focusable, so ⌘C, ⌘V and Delete go to the board pressed last when a page has several.
+        tabIndex={-1}
+        className={cn(
+          "relative isolate h-full w-full touch-none overflow-hidden outline-none select-none",
+          panning ? "cursor-grabbing" : "cursor-grab",
+          className,
+        )}
         onPointerDown={(e) => {
           handlers.onPointerDown(e)
           if (!onBackground(e.target, e.currentTarget)) return
           board.clearSelection()
-          if (document.activeElement instanceof HTMLElement && surface.current?.contains(document.activeElement)) document.activeElement.blur()
+          surface.current?.focus({ preventScroll: true })
         }}
         onPointerMove={(e) => {
           handlers.onPointerMove(e)
