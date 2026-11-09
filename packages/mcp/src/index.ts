@@ -10,7 +10,7 @@ Usage: stickies-mcp [options]
 
   --file <path>    The default board, relative to the project. Default: stickies.canvas
   --root <dir>     The project folder. Boards can't be outside it. Default: the current folder
-  --author <name>  Who new notes are by, when the agent doesn't say
+  --author <name>  Who new notes are by, when the agent doesn't say (default: the agent's app, e.g. "Claude Code")
   --version        Print the version
   --help           Print this help
 `
@@ -31,5 +31,5 @@ if (values.help) {
   process.stdout.write(`${VERSION}\n`)
 } else {
   const adapter = fileAdapter({ root: values.root, file: values.file, author: values.author })
-  await createServer(adapter).connect(new StdioServerTransport())
+  await createServer(adapter, { author: values.author }).connect(new StdioServerTransport())
 }

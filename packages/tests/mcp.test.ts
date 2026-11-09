@@ -13,7 +13,11 @@ let root: string
 let client: Client
 
 async function connect(...args: string[]) {
-  client = new Client({ name: "test", version: "0" })
+  return connectAs({ name: "test", version: "0" }, ...args)
+}
+
+async function connectAs(info: { name: string; version: string; title?: string }, ...args: string[]) {
+  client = new Client(info)
   await client.connect(new StdioClientTransport({ command: "node", args: [SERVER, "--root", root, ...args], stderr: "pipe" }))
 }
 
@@ -55,6 +59,25 @@ describe("the MCP server, with a file board", () => {
     // A second batch goes below the first.
     const [next]: StickyNoteData[] = (await call("add_notes", { notes: [{ text: "Later", state: "progress", author: "Me" }] })).json()
     expect(next).toMatchObject({ x: 0, y: 440, state: "progress", author: "Me" })
+  })
+
+  test("signs unsigned notes with the agent's app, unless --author or the agent says otherwise", async () => {
+    await connectAs({ name: "claude-code", title: "Claude Code", version: "2" })
+    const [mine, theirs]: StickyNoteData[] = (await call("add_notes", { notes: [{ text: "Unsigned" }, { text: "Signed", author: "Me" }] })).json()
+    expect(mine.author).toBe("Claude Code")
+    expect(theirs.author).toBe("Me")
+    await client.close()
+
+    // No title: a known name gets its usual one.
+    await connectAs({ name: "codex-mcp-client", version: "1" })
+    const [codex]: StickyNoteData[] = (await call("add_notes", { notes: [{ text: "From Codex" }] })).json()
+    expect(codex.author).toBe("Codex")
+    await client.close()
+
+    // --author wins over the app's name.
+    await connectAs({ name: "claude-code", title: "Claude Code", version: "2" }, "--author", "Night shift")
+    const [night]: StickyNoteData[] = (await call("add_notes", { notes: [{ text: "Overnight" }] })).json()
+    expect(night.author).toBe("Night shift")
   })
 
   test("lists notes, filtered by state and limited", async () => {

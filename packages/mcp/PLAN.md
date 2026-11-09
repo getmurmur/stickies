@@ -50,7 +50,10 @@ All adapters share one interface (`list`, `add`, `update`, `remove`), so the too
 3. **Publish.** As `@getmurmur/stickies-mcp` (`stickies-mcp` alone is taken by an unrelated project). Publish, list in the MCP Registry, and add a section to `/docs` and `llms.txt`. *Done 9 November 2026: 0.1.0 on npm, and `io.github.getmurmur/stickies` in the MCP Registry (published with `mcp-publisher login github --token`, since the registry's device login can't see org ownership yet).*
 4. **Later.** A hosted version with OAuth, if chat apps need it.
 
+## Settled
+
+- **Authors (0.1.1).** The instructions ask agents to sign their notes. Unsigned notes get the app's name from the MCP handshake (`title`, else a known `name`), unless `--author` is set.
+
 ## Open questions
 
-1. **A default author.** Should notes from an agent say who wrote them, for example `--author "Claude Code"`?
-2. **Notes per repo or per branch?** One `stickies.canvas` per repo is simplest. Branch-specific boards could come later through `board`.
+1. **Notes per repo or per branch?** One `stickies.canvas` per repo is simplest. Branch-specific boards could come later through `board`.

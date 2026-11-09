@@ -41,7 +41,7 @@ Every tool takes an optional `board`: another `.canvas` or `.json` file inside t
 |---|---|---|
 | `--file <path>` | `stickies.canvas` | The default board, relative to the project. |
 | `--root <dir>` | the current folder | The project folder. Boards can't be outside it. |
-| `--author <name>` | none | Who new notes are by, when the agent doesn't say. For example `--author "Claude Code"`. |
+| `--author <name>` | the agent's app | Who new notes are by, when the agent doesn't say. Without it, they're signed with the name the agent's app reports, such as "Claude Code". |
 
 ## How it treats your file
 

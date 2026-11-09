@@ -12,12 +12,13 @@ import {
 } from "../../../apps/www/registry/stickies/lib/stickies-format.ts"
 import type { BoardAdapter } from "./adapter.ts"
 
-export const VERSION = "0.1.0"
+export const VERSION = "0.1.1"
 
 const INSTRUCTIONS = `Sticky notes for the person you're working with, in the open Stickies format (stickies.live).
 Leave a note when there's something they should see later: a blocker, a decision, a question, or work you've finished.
 Keep each note to one idea, in a few words or one short sentence.
-Use "state" for progress ("progress", then "done"), never colour. Tick off notes when the work is finished.`
+Use "state" for progress ("progress", then "done"), never colour. Tick off notes when the work is finished.
+Set "author" to your own name (for example "Claude Code" or "Codex") on notes you add, unless the person asks for another.`
 
 const board = z.string().optional().describe("Which board. Leave out for the default.")
 const colorName = z.enum(STICKY_COLORS).describe("Display only. Never use colour to mean progress.")
@@ -46,8 +47,23 @@ const failure = (e: unknown): CallToolResult => ({
   content: [{ type: "text", text: e instanceof Error ? e.message : String(e) }],
 })
 
-export function createServer(adapter: BoardAdapter): McpServer {
+/** Names for clients that report no title. */
+const CLIENT_NAMES: Record<string, string> = { "claude-code": "Claude Code", codex: "Codex", "codex-mcp-client": "Codex" }
+
+export interface ServerOptions {
+  /** The author set with --author. Without it, notes an agent leaves unsigned are signed with its app's name. */
+  author?: string
+}
+
+export function createServer(adapter: BoardAdapter, options: ServerOptions = {}): McpServer {
   const server = new McpServer({ name: "stickies", version: VERSION }, { instructions: INSTRUCTIONS })
+
+  /** The connected app's name, as it reports it: "Claude Code", say. */
+  const clientAuthor = (): string | undefined => {
+    const client = server.server.getClientVersion()
+    if (!client) return undefined
+    return client.title || CLIENT_NAMES[client.name] || client.name || undefined
+  }
 
   server.registerTool(
     "list_notes",
@@ -91,7 +107,7 @@ export function createServer(adapter: BoardAdapter): McpServer {
               text: z.string().min(1).describe("One idea: a few words, or one short sentence. Markdown."),
               colorName: colorName.optional(),
               state: state.optional(),
-              author: z.string().optional().describe("Who wrote it."),
+              author: z.string().optional().describe('Who wrote it: your own name, like "Claude Code" or "Codex".'),
               ...position,
               ext: ext.optional(),
             }),
@@ -102,7 +118,9 @@ export function createServer(adapter: BoardAdapter): McpServer {
     },
     async (args) => {
       try {
-        const added = await adapter.add(args.notes, args.board)
+        const fallback = options.author ? undefined : clientAuthor()
+        const notes = fallback ? args.notes.map((n) => (n.author ? n : { ...n, author: fallback })) : args.notes
+        const added = await adapter.add(notes, args.board)
         return reply(added.map(compact))
       } catch (e) {
         return failure(e)
