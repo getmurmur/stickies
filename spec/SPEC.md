@@ -225,8 +225,9 @@ The same note shape works for agent tools. An app that offers MCP tools for note
 | `list_notes` | an optional canvas or board ID | a Stickies document |
 | `add_notes` | `notes`: an array of notes, where only `text` is required | the added notes, with IDs |
 | `update_notes` | `notes`: an array with `id` plus the fields to change | the changed notes |
+| `remove_notes` | `ids`: the notes to delete | the IDs removed |
 
-For tool input, `x`, `y`, `width` and `height` are optional; the app places notes itself when they're missing. Full tool definitions are for a later version.
+For tool input, `x`, `y`, `width` and `height` are optional; the app places notes itself when they're missing. Full tool definitions are for a later version; [`@getmurmur/stickies-mcp`](https://stickies.live/docs#mcp) implements these tools for a `.canvas` file.
 
 ## 10. Security
 

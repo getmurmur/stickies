@@ -36,6 +36,12 @@ Install for any agent with `npx skills add getmurmur/stickies`, or into a projec
 - [Format reference](https://stickies.live/skill/references/format.md): the fields and colours on one page
 - [stickies.mjs](https://stickies.live/skill/scripts/stickies.mjs): a helper script with no dependencies (make, validate, text, html, and copy on macOS)
 
+## MCP server
+
+Lets an agent leave, read and tick off sticky notes in a `stickies.canvas` file in the project, which opens in Obsidian as a board. Tools: `list_notes`, `add_notes`, `update_notes`, `remove_notes`. Install for Claude Code with `claude mcp add stickies -- npx -y @getmurmur/stickies-mcp`; other clients run `npx -y @getmurmur/stickies-mcp` over stdio.
+
+- [Docs](https://stickies.live/docs#mcp): install, tools and options
+
 ## Optional
 
 - [JSON Canvas 1.0](https://jsoncanvas.org/spec/1.0/): the format Stickies builds on

@@ -28,6 +28,12 @@ Or into a project's `.claude/skills`, from the registry:
 npx shadcn@latest add https://stickies.live/r/stickies-skill.json
 ```
 
+The MCP server, so an agent can leave, read and tick off notes in a `stickies.canvas` file in your project:
+
+```sh
+claude mcp add stickies -- npx -y @getmurmur/stickies-mcp
+```
+
 ## What's here
 
 ```
@@ -36,7 +42,8 @@ skills/stickies/   an Agent Skill for making, checking and copying Stickies note
 apps/www/          stickies.live: the site, the docs, and the registry
   registry/        the registry's source: format library, theme, hooks, note, board and integrations
 apps/tldraw-example/  tldraw with Stickies copy and paste, for trying the integration (development only)
-packages/tests/    tests for the format library, and the install check
+packages/mcp/      the MCP server (@getmurmur/stickies-mcp)
+packages/tests/    tests for the format library and the MCP server, and the install check
 ```
 
 - [spec/SPEC.md](spec/SPEC.md): the draft spec (0.1)

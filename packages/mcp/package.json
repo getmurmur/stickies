@@ -1,0 +1,54 @@
+{
+  "name": "@getmurmur/stickies-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An MCP server that lets agents leave, read and tick off sticky notes in the open Stickies format (stickies.live).",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "sticky-notes",
+    "stickies",
+    "json-canvas",
+    "obsidian",
+    "claude-code",
+    "codex"
+  ],
+  "homepage": "https://stickies.live/docs#mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getmurmur/stickies.git",
+    "directory": "packages/mcp"
+  },
+  "bugs": "https://github.com/getmurmur/stickies/issues",
+  "author": "George Drury (https://getmurmur.dev)",
+  "license": "MIT",
+  "mcpName": "io.github.getmurmur/stickies",
+  "type": "module",
+  "bin": {
+    "stickies-mcp": "dist/index.mjs"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "dev": "node --experimental-strip-types src/index.ts",
+    "typecheck": "tsc --noEmit -p ."
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsdown": "^0.23.4",
+    "typescript": "^7.0.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -42,14 +42,14 @@ function P({ children }: { children: ReactNode }) {
   return <p className="text-[15px] leading-7 text-foreground/85">{children}</p>
 }
 
-function Props({ rows }: { rows: [string, string, string][] }) {
+function Props({ rows, heads = ["Prop", "Type"] }: { rows: [string, string, string][]; heads?: [string, string] }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-left text-[13px]">
         <thead className="text-muted">
           <tr>
-            <th className="py-2 pr-4 font-medium">Prop</th>
-            <th className="py-2 pr-4 font-medium">Type</th>
+            <th className="py-2 pr-4 font-medium">{heads[0]}</th>
+            <th className="py-2 pr-4 font-medium">{heads[1]}</th>
             <th className="py-2 font-medium">What it does</th>
           </tr>
         </thead>
@@ -81,6 +81,7 @@ const NAV = [
   ["stickies-theme", "Theme"],
   ["stickies-tldraw", "tldraw"],
   ["stickies-skill", "Agent skill"],
+  ["mcp", "MCP server"],
 ]
 
 export default function Docs() {
@@ -357,6 +358,36 @@ export default function Board() {
           <Install item="stickies-skill" />
           <P>
             <a href="/llms.txt" className="underline underline-offset-2">llms.txt</a> sums up the format for any model.
+          </P>
+        </Section>
+
+        <Section id="mcp" title="MCP server">
+          <P>
+            Lets an agent leave notes for you while it works: a blocker, a decision, a question, or work it&apos;s finished. It can read them back
+            and tick them off later. Notes go in a <code>stickies.canvas</code> file in your project, so they open in Obsidian as a board, git
+            shows what changed, and they paste onto a board like this one. It runs on your machine, with no account.
+          </P>
+          <Code>claude mcp add stickies -- npx -y @getmurmur/stickies-mcp</Code>
+          <P>For Codex, Cursor and other MCP clients:</P>
+          <Code>{`
+{
+  "mcpServers": {
+    "stickies": { "command": "npx", "args": ["-y", "@getmurmur/stickies-mcp"] }
+  }
+}`}</Code>
+          <Props
+            heads={["Tool", "Input"]}
+            rows={[
+              ["list_notes", "state?, limit?", "Reads the notes on a board, as a Stickies document."],
+              ["add_notes", "notes", "Adds notes. Only text is needed; new notes go below the others."],
+              ["update_notes", "notes", 'Changes notes by ID. state: "done" ticks one off.'],
+              ["remove_notes", "ids", "Deletes notes, with any arrows to them."],
+            ]}
+          />
+          <P>
+            Every tool takes an optional <code>board</code>, another <code>.canvas</code> file in the project. Options:{" "}
+            <code>--file</code> for the default board, and <code>--author</code> to sign agents&apos; notes, such as{" "}
+            <code>--author &quot;Claude Code&quot;</code>. Edits made in Obsidian or by hand are never overwritten.
           </P>
         </Section>
       </main>

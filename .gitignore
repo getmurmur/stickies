@@ -11,3 +11,6 @@ apps/www/public/r
 
 # Written by Next for coding agents.
 apps/*/AGENTS.md
+
+# Built by tsdown.
+packages/*/dist
