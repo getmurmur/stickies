@@ -1,7 +1,6 @@
 {
   "name": "@getmurmur/stickies-mcp",
   "version": "0.1.0",
-  "private": true,
   "description": "An MCP server that lets agents leave, read and tick off sticky notes in the open Stickies format (stickies.live).",
   "keywords": [
     "mcp",
@@ -37,7 +36,8 @@
   "scripts": {
     "build": "tsdown",
     "dev": "node --experimental-strip-types src/index.ts",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "prepublishOnly": "tsdown"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
