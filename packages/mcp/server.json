@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.getmurmur/stickies",
+  "title": "Stickies",
+  "description": "Agents leave, read and tick off sticky notes in a .canvas file that opens in Obsidian.",
+  "repository": {
+    "url": "https://github.com/getmurmur/stickies",
+    "source": "github",
+    "subfolder": "packages/mcp"
+  },
+  "websiteUrl": "https://stickies.live/docs#mcp",
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@getmurmur/stickies-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
