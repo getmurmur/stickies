@@ -70,4 +70,4 @@ A note with no colour is yellow. Colour is display only; progress goes in `state
 | macOS | `live.stickies.json` |
 | Web, copy and paste events | `application/vnd.stickies+json` on `clipboardData` |
 
-Alongside it: `text/html` (coloured boxes, with the full document in a `data-stickies` attribute on the outer element) and `text/plain` (each note's text, separated by a blank line).
+Alongside it: `text/html` (coloured boxes, with the full document in a `data-stickies` attribute on the outer element) and `text/plain` (each note's text, separated by a blank line). Pages and Electron apps should also write `obsidian/canvas`: `{ "nodes", "edges", "center" }`, which Obsidian's canvas pastes as cards, keeping the Stickies fields.

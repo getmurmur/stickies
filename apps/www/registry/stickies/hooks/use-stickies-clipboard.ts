@@ -3,8 +3,10 @@
 import { type RefObject, useCallback, useEffect, useRef } from "react"
 import {
   fromHtml,
+  fromObsidianCanvas,
   fromText,
   notesOf,
+  OBSIDIAN_CANVAS_MIME,
   parseDocument,
   STICKIES_MIME,
   type StickiesDocument,
@@ -12,6 +14,7 @@ import {
   type StickyNoteData,
   toDocument,
   toHtml,
+  toObsidianCanvas,
   toText,
 } from "@/registry/stickies/lib/stickies-format"
 
@@ -22,23 +25,29 @@ export interface StickiesClipboardPaste {
 }
 
 /**
- * The richest Stickies content in a clipboard or drop: the Stickies JSON, then the document
- * in the HTML's `data-stickies`, then plain text as one note per paragraph.
+ * The richest Stickies content in a clipboard or drop: the Stickies JSON, then cards copied
+ * from Obsidian's canvas, then the document in the HTML's `data-stickies`, then plain text as
+ * one note per paragraph.
  */
 export function readStickies(data: DataTransfer, { allowText = true }: { allowText?: boolean } = {}): StickiesClipboardPaste | null {
-  const doc = parseDocument(data.getData(STICKIES_MIME)) ?? fromHtml(data.getData("text/html"))
+  const doc =
+    parseDocument(data.getData(STICKIES_MIME)) ?? fromObsidianCanvas(data.getData(OBSIDIAN_CANVAS_MIME)) ?? fromHtml(data.getData("text/html"))
   if (doc) return { notes: notesOf(doc), document: doc }
   if (!allowText) return null
   const notes = fromText(data.getData("text/plain"))
   return notes.length ? { notes, document: null } : null
 }
 
-/** Writes notes as Stickies JSON, HTML and plain text, inside a copy, cut or drag event. */
+/**
+ * Writes notes as Stickies JSON, HTML and plain text, inside a copy, cut or drag event. Also
+ * as Obsidian's canvas type, so they paste into an Obsidian canvas as cards.
+ */
 export function writeStickies(data: DataTransfer, notes: StickyNoteData[], source?: StickiesSource) {
   const doc = toDocument(notes, { source })
   data.setData("text/plain", toText(notes))
   data.setData("text/html", toHtml(doc))
   data.setData(STICKIES_MIME, JSON.stringify(doc))
+  data.setData(OBSIDIAN_CANVAS_MIME, toObsidianCanvas(doc))
 }
 
 /** True while someone is typing, when copy and paste belong to the text. */

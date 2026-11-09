@@ -8,15 +8,16 @@ What to do:
 
 2. Use the format library rather than writing the format by hand. In a React project with shadcn:
    `npx shadcn@latest add https://stickies.live/r/stickies-format.json`
-   Otherwise copy the single file from https://github.com/getmurmur/stickies/blob/main/apps/www/registry/stickies/lib/stickies-format.ts (no dependencies). It has `toDocument`, `parseDocument`, `toHtml`, `fromHtml`, `toText`, `fromText` and `placeNotes`.
+   Otherwise copy the single file from https://github.com/getmurmur/stickies/blob/main/apps/www/registry/stickies/lib/stickies-format.ts (no dependencies). It has `toDocument`, `parseDocument`, `toHtml`, `fromHtml`, `toText`, `fromText`, `toObsidianCanvas`, `fromObsidianCanvas` and `placeNotes`.
 
 3. Copy: when the user copies selected notes (and isn't typing in a field), write all three versions in the copy event:
    - `application/vnd.stickies+json`: the document as JSON
    - `text/html`: `toHtml(document)`, coloured boxes that carry the document in `data-stickies`. Required: it's the only version every browser passes between sites.
    - `text/plain`: `toText(notes)`
+   - `obsidian/canvas`: `toObsidianCanvas(document)`, so notes paste into an Obsidian canvas as cards. Recommended on the web and in Electron apps; it only reaches Obsidian from Chromium-based apps.
    On the web, use the `copy` event's `clipboardData.setData`, not `navigator.clipboard`. In a native macOS app, write `live.stickies.json`, `public.html` and `public.utf8-plain-text` to NSPasteboard.
 
-4. Paste: read the richest version there: the Stickies JSON, then `data-stickies` in the HTML (`fromHtml`), then, if it makes sense for this app, plain text as one note per paragraph (`fromText`). Give pasted notes new IDs and place them under the pointer, keeping their positions relative to each other (`placeNotes`). Treat unknown colours as yellow and unknown states as open. Keep anything in `ext` you don't understand.
+4. Paste: read the richest version there: the Stickies JSON, then `obsidian/canvas` (`fromObsidianCanvas`, cards copied from Obsidian), then `data-stickies` in the HTML (`fromHtml`), then, if it makes sense for this app, plain text as one note per paragraph (`fromText`). Give pasted notes new IDs and place them under the pointer, keeping their positions relative to each other (`placeNotes`). Treat unknown colours as yellow and unknown states as open. Keep anything in `ext` you don't understand.
 
 5. If this is a React app that wants a sticky-note UI rather than its own, the components are at https://stickies.live/docs: `npx shadcn@latest add https://stickies.live/r/sticky-board.json` gives a whole board with copy and paste already working.
 

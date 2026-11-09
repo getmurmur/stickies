@@ -6,6 +6,7 @@ import {
   changeNote,
   createNote,
   fromHtml,
+  fromObsidianCanvas,
   fromText,
   notesOf,
   parseDocument,
@@ -15,6 +16,7 @@ import {
   stateOf,
   toDocument,
   toHtml,
+  toObsidianCanvas,
   toText,
   validate,
 } from "../../apps/www/registry/stickies/lib/stickies-format"
@@ -111,5 +113,52 @@ describe("clipboard versions", () => {
     expect(placed.map((n) => n.id)).not.toContain("a")
     expect(placed.find((n) => n.text === "Left")).toMatchObject({ x: 1000, y: 500, source: { id: "a", app: "Elsewhere" } })
     expect(placed.find((n) => n.text === "Right")).toMatchObject({ x: 1300, y: 510 })
+  })
+})
+
+describe("Obsidian's canvas clipboard", () => {
+  // As Obsidian 1.13 copies two cards and the arrow between them: nodes, edges and a center.
+  const copied = JSON.stringify({
+    nodes: [
+      { id: "a1", type: "text", text: "Plain card", x: 0, y: 0, width: 250, height: 60 },
+      { id: "b2", type: "text", text: "Red card", x: 300, y: 0, width: 250, height: 60, color: "1" },
+      { id: "c3", type: "file", file: "Notes/Idea.md", x: 0, y: 200, width: 400, height: 300 },
+    ],
+    edges: [{ id: "e1", fromNode: "a1", fromSide: "right", toNode: "b2", toSide: "left" }],
+    center: { x: 275, y: 250 },
+  })
+
+  test("Obsidian's cards read as a document, with numbered colours named", () => {
+    const doc = fromObsidianCanvas(copied)
+    expect(doc).not.toBeNull()
+    const notes = notesOf(doc!)
+    expect(notes.map((n) => n.text)).toEqual(["Plain card", "Red card"])
+    expect(notes[1].colorName).toBe("pink")
+    expect(notes[1].color).toBe("#fbe1ed")
+    // Other kinds of card are kept, not shown as notes.
+    expect(doc!.nodes).toHaveLength(3)
+    expect(doc!.edges).toHaveLength(1)
+  })
+
+  test("a document written for Obsidian comes back the same, with a center", () => {
+    const doc = toDocument(
+      [
+        createNote({ id: "n1", text: "One", x: 0, y: 0, state: "progress", author: "George" }),
+        createNote({ id: "n2", text: "Two", x: 300, y: 100, colorName: "blue" }),
+      ],
+      { edges: [{ id: "e1", fromNode: "n1", toNode: "n2", toEnd: "arrow" }] },
+    )
+    const written = JSON.parse(toObsidianCanvas(doc))
+    expect(written.center).toEqual({ x: 270, y: 130 })
+    const back = fromObsidianCanvas(toObsidianCanvas(doc))
+    expect(notesOf(back!)).toEqual(notesOf(doc))
+    expect(back!.edges).toEqual(doc.edges)
+  })
+
+  test("anything else is refused", () => {
+    expect(fromObsidianCanvas("")).toBeNull()
+    expect(fromObsidianCanvas("not json")).toBeNull()
+    expect(fromObsidianCanvas(JSON.stringify({ edges: [] }))).toBeNull()
+    expect(fromObsidianCanvas(JSON.stringify({ nodes: [{ id: "x", type: "text" }], edges: [] }))).toBeNull()
   })
 })

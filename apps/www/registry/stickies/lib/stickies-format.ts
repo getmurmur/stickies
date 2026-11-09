@@ -296,6 +296,53 @@ export function fromHtml(html: string): StickiesDocument | null {
   return parseDocument(raw)
 }
 
+// ---------------------------------------------------------------- Obsidian
+
+/**
+ * Obsidian's canvas clipboard type. It holds plain JSON Canvas (`nodes`, `edges`, and the
+ * selection's `center`), so a Stickies document fits as it is, and Obsidian keeps the fields
+ * it doesn't know. Only Chromium-based apps can pass it between each other (spec §8.6).
+ */
+export const OBSIDIAN_CANVAS_MIME = "obsidian/canvas"
+
+/** Obsidian's numbered colours, as the nearest named colour. */
+const OBSIDIAN_COLORS: Record<string, StickyColor> = { "1": "pink", "2": "yellow", "3": "yellow", "4": "green", "5": "blue", "6": "purple" }
+
+/** The document as Obsidian's canvas expects it on the clipboard. */
+export function toObsidianCanvas(doc: StickiesDocument): string {
+  const { nodes, edges = [] } = doc
+  const left = Math.min(...nodes.map((n) => n.x))
+  const top = Math.min(...nodes.map((n) => n.y))
+  const right = Math.max(...nodes.map((n) => n.x + n.width))
+  const bottom = Math.max(...nodes.map((n) => n.y + n.height))
+  const center = nodes.length ? { x: (left + right) / 2, y: (top + bottom) / 2 } : { x: 0, y: 0 }
+  return JSON.stringify({ nodes, edges, center })
+}
+
+/**
+ * Cards copied from Obsidian's canvas, as a Stickies document. Text cards with one of
+ * Obsidian's numbered colours get the nearest named colour. Null when it isn't valid.
+ */
+export function fromObsidianCanvas(json: string): StickiesDocument | null {
+  if (!json || json.length > 1_000_000) return null
+  let value: unknown
+  try {
+    value = JSON.parse(json)
+  } catch {
+    return null
+  }
+  if (typeof value !== "object" || value === null || !("nodes" in value) || !Array.isArray(value.nodes)) return null
+  const nodes = value.nodes.map((node: unknown) => {
+    if (typeof node !== "object" || node === null) return node
+    const { color, colorName, type } = node as Record<string, unknown>
+    const named = typeof color === "string" ? OBSIDIAN_COLORS[color] : undefined
+    if (type !== "text" || colorName !== undefined || !named) return node
+    return { ...node, colorName: named, color: STICKY_PALETTE[named].paper }
+  })
+  const edges = "edges" in value && Array.isArray(value.edges) ? value.edges : []
+  return parseDocument({ stickies: STICKIES_VERSION, nodes, edges })
+}
+
 /** Plain text as notes: one per paragraph, laid out in rows. */
 export function fromText(text: string, columns = 4): StickyNoteData[] {
   const gap = 40

@@ -158,7 +158,8 @@ When a person copies or drags notes, the sender puts several versions on the cli
 | 1 | Stickies JSON (below) | The full document. |
 | 2 | `text/html` | Each note as a coloured box, with the document in a `data-stickies` attribute (§8.2). Required. |
 | 3 | `text/plain` | The notes' text (§8.3). |
-| 4 | `image/png` (optional) | A picture of the notes, for image-only apps. |
+| 4 | `obsidian/canvas` (recommended) | The nodes and edges, for Obsidian's canvas (§8.6). |
+| 5 | `image/png` (optional) | A picture of the notes, for image-only apps. |
 
 ### 8.1 Format names
 
@@ -196,8 +197,9 @@ Each note's text, in reading order, separated by a blank line. No markers or met
 A receiver SHOULD:
 
 1. Read the Stickies JSON if it's there.
-2. Otherwise, look for `data-stickies` in the HTML.
-3. Otherwise, fall back to its usual paste.
+2. Otherwise, read `obsidian/canvas` if it's there (§8.6).
+3. Otherwise, look for `data-stickies` in the HTML.
+4. Otherwise, fall back to its usual paste.
 
 If the document's `source` shows it came from the receiver itself and the notes still exist, the receiver MAY offer to move or link them instead of making copies.
 
@@ -215,6 +217,15 @@ Web pages SHOULD write all three versions in a `copy` (or `cut`) event, with `ev
 So the HTML version is the only one that reaches every receiver, and it's required for pages (§8). Pages SHOULD NOT rely on `navigator.clipboard` for copying notes. A page that has to copy outside a `copy` event, such as from a "Copy" button, SHOULD write `text/html` and `text/plain` with `navigator.clipboard.write()`, and rely on `data-stickies`.
 
 Browsers may store custom types in their own private clipboard format, which native apps can't read. Native apps receiving from a browser SHOULD therefore check `public.html` (or `CF_HTML` on Windows) for `data-stickies`.
+
+### 8.6 Obsidian
+
+Obsidian's canvas copies and pastes cards as `obsidian/canvas`: plain JSON Canvas, `{ "nodes": [...], "edges": [...], "center": { "x", "y" } }`, where `center` is the middle of the copied cards. Pasting places the cards around the middle of the view, with new IDs. Obsidian keeps fields it doesn't know, so a note's `colorName`, `state`, `author` and `ext` survive a trip through it. Tested with Obsidian 1.13 in November 2026.
+
+- Senders SHOULD also write the document's `nodes` and `edges` as `obsidian/canvas`, with `center`, so notes paste into an Obsidian canvas as cards.
+- Receivers SHOULD read `obsidian/canvas`, so cards copied in Obsidian paste as notes. A text card with one of JSON Canvas's numbered colours gets the nearest named colour: `"1"` pink, `"2"` and `"3"` yellow, `"4"` green, `"5"` blue, `"6"` purple. Other kinds of card are skipped, as in §3.
+
+Obsidian is a Chromium app, so this type only travels between Chromium-based apps and browsers, where custom types share one private clipboard format. Safari and native apps can't reach it, so they still need the HTML version.
 
 ## 9. Agents (MCP), non-normative
 
