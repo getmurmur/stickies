@@ -47,7 +47,7 @@ All adapters share one interface (`list`, `add`, `update`, `remove`), so the too
 
 1. **File adapter and the four tools.** Package, tests (including a real MCP client talking to the server over stdio), and a check in a real agent. *Done: 8 server tests pass, and Claude Code left, listed and ticked off notes in a test folder.*
 2. **Miro adapter.** Once there's a token.
-3. **Publish.** As `@getmurmur/stickies-mcp` (`stickies-mcp` alone is taken by an unrelated project). Publish, list in the MCP Registry, and add a section to `/docs`, `llms.txt` and the agent prompt.
+3. **Publish.** As `@getmurmur/stickies-mcp` (`stickies-mcp` alone is taken by an unrelated project). Publish, list in the MCP Registry, and add a section to `/docs` and `llms.txt`. *Done 9 November 2026: 0.1.0 on npm, and `io.github.getmurmur/stickies` in the MCP Registry (published with `mcp-publisher login github --token`, since the registry's device login can't see org ownership yet).*
 4. **Later.** A hosted version with OAuth, if chat apps need it.
 
 ## Open questions
